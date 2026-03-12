@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "shadcn/tailwind.css";
 @custom-variant dark (&:is(.dark *));
 @theme inline {
   --font-sans: var(--font-inter);
@@ -54,6 +55,21 @@
 }
 .animate-float {
   animation: float-gentle 6s ease-in-out infinite;
+}
+@keyframes typing-dot {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+.animate-typing-dot {
+  animation: typing-dot 1.4s ease-in-out infinite;
 }
 .glass-card {
   background: rgba(255, 255, 255, 0.02);

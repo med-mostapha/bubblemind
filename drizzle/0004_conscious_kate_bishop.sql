@@ -1,0 +1,1 @@
+ALTER TABLE "chat_widget_settings" ADD COLUMN "bot_id" text;

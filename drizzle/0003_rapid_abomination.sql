@@ -1,0 +1,20 @@
+CREATE TABLE "chat_widget_settings" (
+	"id" text PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"project_id" text NOT NULL,
+	"bubble_position" text,
+	"bubble_color" text,
+	"bubble_icon" text,
+	"bubble_size" text,
+	"bubble_animation" text,
+	"tooltip_text" text,
+	"window_primary_color" text,
+	"window_background_color" text,
+	"window_border_radius" text,
+	"window_font_family" text,
+	"window_header_title" text,
+	"window_header_subtitle" text,
+	"company_logo_url" text,
+	"opening_message" text,
+	"opening_message_enabled" text,
+	"updated_at" text DEFAULT now() NOT NULL
+);

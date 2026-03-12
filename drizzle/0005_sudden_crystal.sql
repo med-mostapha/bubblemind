@@ -1,0 +1,1 @@
+ALTER TABLE "chat_widget_settings" ADD COLUMN "bubble_icon_url" text;

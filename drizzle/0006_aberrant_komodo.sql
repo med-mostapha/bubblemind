@@ -1,0 +1,1 @@
+ALTER TABLE "chat_widget_settings" ADD COLUMN "use_logo_as_bubble" text;

@@ -1,33 +1,47 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+
+import { Inter } from "next/font/google";
+
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"]
-});
+import Script from "next/script";
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"]
+import MainSiteWrapper from "@/components/MainSiteWrapper";
+
+const inter = Inter({
+  variable: "--font-inter",
+
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Real Time AI Support",
-  description: "Realtime AI support for your website or application."
+  title: "Realtime Clients Support - Human-friendly AI",
+
+  description:
+    "Instantly resolve customer questions with an assistant that reads your docs and speaks with empathy.",
 };
 
 export default function RootLayout({
-  children
+  children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${inter.variable} min-h-screen flex flex-col p-0 antialiased font-sans`}
       >
-        {children}
+        <MainSiteWrapper>
+          {children}
+        </MainSiteWrapper>
+
+        <Script
+          id="unicorn-studio"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `!function(){if(!window.UnicornStudio){window.UnicornStudio={isInitialized:!1};var i=document.createElement("script");i.src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.29/dist/unicornStudio.umd.js",i.onload=function(){window.UnicornStudio.isInitialized||(UnicornStudio.init(),window.UnicornStudio.isInitialized=!0)},(document.head || document.body).appendChild(i)}}();`,
+          }}
+        />
       </body>
     </html>
   );
