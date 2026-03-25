@@ -75,13 +75,13 @@ export default function HighVisibilityOnboarding() {
   return (
     <main className="fixed inset-0 bg-[#030303] text-white flex flex-col items-center justify-center font-sans overflow-hidden">
       {/* PROGRESS */}
-      <div className="fixed top-0 left-0 w-full z-[100]">
-        <div className="w-full h-[3px] bg-white/5" />
+      <div className="fixed top-0 left-0 w-full z-100">
+        <div className="w-full h-0.75 bg-white/5" />
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: isSubmitting ? "100%" : `${progress}%` }}
           transition={{ type: "spring", stiffness: 80, damping: 20 }}
-          className="absolute top-0 left-0 h-[3px] bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,1)]"
+          className="absolute top-0 left-0 h-0.75 bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,1)]"
         />
       </div>
 
@@ -139,7 +139,7 @@ export default function HighVisibilityOnboarding() {
                       }
                       className="w-full bg-transparent border-none py-6 text-2xl md:text-4xl text-center outline-none placeholder:text-zinc-800 text-white font-medium"
                     />
-                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-32 h-[1px] bg-white/10 group-focus-within:w-full group-focus-within:bg-emerald-500 transition-all duration-700 shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
+                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-32 h-px bg-white/10 group-focus-within:w-full group-focus-within:bg-emerald-500 transition-all duration-700 shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
                   </div>
 
                   {/*  Error message */}
