@@ -8,20 +8,20 @@ const STEPS = [
     id: "name",
     question: "Business Name",
     field: "businessName",
-    placeholder: "e.g. SNIM"
+    placeholder: "e.g. SNIM",
   },
   {
     id: "website",
     question: "Website URL",
     field: "websiteUrl",
-    placeholder: "https://votre-entreprise.mr"
+    placeholder: "https://votre-entreprise.mr",
   },
   {
     id: "links",
     question: "External Links",
-    field: "externaleLinks",
-    placeholder: "Social media or PDF docs..."
-  }
+    field: "externalLinks",
+    placeholder: "Social media or PDF docs...",
+  },
 ];
 
 export default function HighVisibilityOnboarding() {
@@ -29,9 +29,10 @@ export default function HighVisibilityOnboarding() {
   const [formData, setFormData] = useState({
     businessName: "",
     websiteUrl: "",
-    externaleLinks: ""
+    externalLinks: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useLayoutEffect(() => {
@@ -40,30 +41,40 @@ export default function HighVisibilityOnboarding() {
     }
   }, [step, isSubmitting]);
 
-  // --- SUBMISSION HANDLER ---
   const handleSubmit = async () => {
     setIsSubmitting(true);
+    setSubmitError(null);
 
-    const response = await fetch("/api/metadata/store", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        business_name: formData.businessName,
-        website_url: formData.websiteUrl,
-        external_links: formData.externaleLinks
-      })
-    });
+    try {
+      const response = await fetch("/api/metadata/store", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          business_name: formData.businessName,
+          website_url: formData.websiteUrl,
+          external_links: formData.externalLinks,
+        }),
+      });
 
-    await response.json();
-    setIsSubmitting(false);
-    window.location.reload();
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data?.message || "Failed to save workspace info");
+      }
+
+      window.location.reload();
+    } catch (err) {
+      setSubmitError(
+        err instanceof Error ? err.message : "Something went wrong",
+      );
+      setIsSubmitting(false);
+    }
   };
 
   const progress = ((step + 1) / STEPS.length) * 100;
 
   return (
     <main className="fixed inset-0 bg-[#030303] text-white flex flex-col items-center justify-center font-sans overflow-hidden">
-      {/* --- PROGRESS SECTION --- */}
+      {/* PROGRESS */}
       <div className="fixed top-0 left-0 w-full z-[100]">
         <div className="w-full h-[3px] bg-white/5" />
         <motion.div
@@ -76,7 +87,6 @@ export default function HighVisibilityOnboarding() {
 
       <AnimatePresence mode="wait">
         {!isSubmitting ? (
-          /* --- MAIN FORM ENGINE --- */
           <motion.div
             key="form"
             initial={{ opacity: 0 }}
@@ -124,13 +134,20 @@ export default function HighVisibilityOnboarding() {
                       onChange={(e) =>
                         setFormData({
                           ...formData,
-                          [STEPS[step].field]: e.target.value
+                          [STEPS[step].field]: e.target.value,
                         })
                       }
                       className="w-full bg-transparent border-none py-6 text-2xl md:text-4xl text-center outline-none placeholder:text-zinc-800 text-white font-medium"
                     />
                     <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-32 h-[1px] bg-white/10 group-focus-within:w-full group-focus-within:bg-emerald-500 transition-all duration-700 shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
                   </div>
+
+                  {/*  Error message */}
+                  {submitError && (
+                    <p className="text-sm text-red-400 bg-red-950/40 border border-red-500/20 rounded-lg px-4 py-2">
+                      {submitError}
+                    </p>
+                  )}
 
                   <button
                     type="submit"
@@ -143,7 +160,6 @@ export default function HighVisibilityOnboarding() {
             </form>
           </motion.div>
         ) : (
-          /* --- HIGH-END INITIALIZATION OVERLAY --- */
           <motion.div
             key="loading"
             initial={{ opacity: 0 }}
@@ -151,7 +167,7 @@ export default function HighVisibilityOnboarding() {
             className="flex flex-col items-center gap-12 text-center"
           >
             <div className="space-y-3">
-              <h3 className="text-2xl font-bold tracking-[ -0.04em] italic text-white">
+              <h3 className="text-2xl font-bold tracking-[-0.04em] italic text-white">
                 Initializing Sovereign Intelligence...
               </h3>
               <div className="flex flex-col gap-1 items-center">
@@ -166,7 +182,7 @@ export default function HighVisibilityOnboarding() {
                       transition={{
                         repeat: Infinity,
                         duration: 1,
-                        delay: i * 0.2
+                        delay: i * 0.2,
                       }}
                       className="w-1 h-1 bg-emerald-500 rounded-full"
                     />
@@ -178,7 +194,6 @@ export default function HighVisibilityOnboarding() {
         )}
       </AnimatePresence>
 
-      {/* FOOTER */}
       <div className="fixed bottom-12 flex flex-col items-center gap-4 opacity-10">
         <div className="text-[10px] font-bold tracking-[0.5em] text-white uppercase">
           MRT.AI • SECURE PROTOCOL
