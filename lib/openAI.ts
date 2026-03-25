@@ -142,37 +142,22 @@ export async function generateSupportAnswer({
   try {
     const systemPrompt = `
 You are a professional AI customer support assistant.
-
-You are answering on behalf of a company${
-      brandName ? ` called "${brandName}"` : ""
-    }.
+You are answering on behalf of a company${brandName ? ` called "${brandName}"` : ""}.
 
 STRICT RULES:
 - Answer ONLY based on the PROVIDED KNOWLEDGE CONTEXT. If the answer is not in the knowledge, say you don't know or suggest contacting support.
-- Reply with a SINGLE, short message. Do not repeat greetings the user already saw; do not output multiple paragraphs or duplicate salutations.
-- Do not copy-paste raw URLs, paths, or technical slugs from the context (e.g. no "pca/order/..." or full links). Use natural language and summarize.
-- Be concise, direct, and helpful. Use correct spelling and accents for the language you write in (e.g. French: é, è, ê, à, ç).
+- Reply with a SINGLE, short message.
+- Be concise, direct, and helpful.
 - Never invent policies, prices, or guarantees.
 `.trim();
 
     const cleanContext = fixMojibake(knowledgeContext);
-    const fullPrompt = `
-${systemPrompt}
 
----
-
-KNOWLEDGE CONTEXT:
-${cleanContext}
-
----
-
-USER QUESTION:
-${question}
-`.trim();
+    const userContent = `KNOWLEDGE CONTEXT:\n${cleanContext}\n\nUSER QUESTION:\n${question}`;
 
     const content = await callOpenRouter(ASSISTANT_MODEL, [
       { role: "system", content: systemPrompt },
-      { role: "user", content: fullPrompt },
+      { role: "user", content: userContent },
     ]);
 
     return fixMojibake(content);
