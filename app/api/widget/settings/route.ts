@@ -20,13 +20,38 @@ const DEFAULT_SETTINGS = {
   window_header_subtitle: "Ask anything about our services",
   company_logo_url: "",
   use_logo_as_bubble: "true",
-  opening_message:
-    "Hello 👋\nHow can I help you today?",
-  opening_message_enabled: "true"
+  opening_message: "Hello 👋\nHow can I help you today?",
+  opening_message_enabled: "true",
 };
 
+const ALLOWED_FIELDS = [
+  "bubble_position",
+  "bubble_color",
+  "bubble_icon",
+  "bubble_icon_url",
+  "bubble_size",
+  "bubble_animation",
+  "tooltip_text",
+  "window_primary_color",
+  "window_background_color",
+  "window_border_radius",
+  "window_font_family",
+  "window_header_title",
+  "window_header_subtitle",
+  "company_logo_url",
+  "use_logo_as_bubble",
+  "opening_message",
+  "opening_message_enabled",
+] as const;
+
+function sanitizeBody(body: Record<string, unknown>) {
+  return Object.fromEntries(
+    ALLOWED_FIELDS.filter((key) => key in body).map((key) => [key, body[key]]),
+  );
+}
+
 function createBotId(projectId: string) {
-  return `bot_${projectId}_${Math.random().toString(36).slice(2, 8)}`;
+  return `bot_${projectId}_${crypto.randomUUID().slice(0, 8)}`;
 }
 
 export async function GET() {
@@ -51,7 +76,7 @@ export async function GET() {
           project_id: user.organization_id,
           bot_id,
           ...DEFAULT_SETTINGS,
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
         })
         .returning();
       record = inserted;
@@ -65,13 +90,13 @@ export async function GET() {
     }
 
     return NextResponse.json({
-      settings: { ...DEFAULT_SETTINGS, ...record }
+      settings: { ...DEFAULT_SETTINGS, ...record },
     });
   } catch (error) {
     console.error("Error fetching chat widget settings:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -83,7 +108,8 @@ export async function POST(req: NextRequest) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const body = await req.json();
+    const body = (await req.json()) as Record<string, unknown>;
+    const safe = sanitizeBody(body);
 
     const existing = await db
       .select()
@@ -97,9 +123,9 @@ export async function POST(req: NextRequest) {
       await db
         .update(chatWidgetSettings)
         .set({
-          ...body,
+          ...safe,
           bot_id: currentBotId,
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
         })
         .where(eq(chatWidgetSettings.id, existing[0].id));
     } else {
@@ -107,8 +133,9 @@ export async function POST(req: NextRequest) {
       await db.insert(chatWidgetSettings).values({
         project_id: user.organization_id,
         bot_id,
-        ...body,
-        updated_at: new Date().toISOString()
+        ...DEFAULT_SETTINGS,
+        ...safe,
+        updated_at: new Date().toISOString(),
       });
     }
 
@@ -117,8 +144,7 @@ export async function POST(req: NextRequest) {
     console.error("Error updating chat widget settings:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
-
