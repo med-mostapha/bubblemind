@@ -1,12 +1,11 @@
 import { db } from "@/db/client";
 import { metadata } from "@/db/schema";
 import { isAuthorized } from "@/lib/isAuthorized";
-import { cookies } from "next/headers";
+import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   const user = await isAuthorized();
-
   if (!user) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
@@ -17,17 +16,28 @@ export async function POST(req: NextRequest) {
     return new NextResponse("Missing required fields", { status: 400 });
   }
 
-  // Here you would typically save the metadata to your database
-  const metadataResponse = await db
+  const existing = await db
+    .select({ id: metadata.id })
+    .from(metadata)
+    .where(eq(metadata.user_email, user.email))
+    .limit(1);
+
+  if (existing.length > 0) {
+    return NextResponse.json(
+      { error: "Workspace metadata already exists" },
+      { status: 409 },
+    );
+  }
+
+  const [record] = await db
     .insert(metadata)
     .values({
       user_email: user.email,
       business_name,
       website_url,
-      external_links
+      external_links: external_links || null,
     })
     .returning();
 
-  (await cookies()).set("metadata", JSON.stringify({ business_name }));
-  return NextResponse.json({ metadataResponse }, { status: 201 });
+  return NextResponse.json({ data: record }, { status: 201 });
 }
