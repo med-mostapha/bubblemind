@@ -1,55 +1,60 @@
 import { isAuthorized } from "@/lib/isAuthorized";
 import { db } from "@/db/client";
 import { conversations, messages } from "@/db/schema";
-import { desc, eq, inArray } from "drizzle-orm";
-import { NextResponse } from "next/server";
+import { desc, eq, sql } from "drizzle-orm";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+const DEFAULT_PAGE_SIZE = 20;
+const MAX_PAGE_SIZE = 100;
+
+export async function GET(req: NextRequest) {
   try {
     const user = await isAuthorized();
     if (!user) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
+    const { searchParams } = new URL(req.url);
+    const page = Math.max(1, parseInt(searchParams.get("page") ?? "1"));
+    const limit = Math.min(
+      MAX_PAGE_SIZE,
+      parseInt(searchParams.get("limit") ?? String(DEFAULT_PAGE_SIZE)),
+    );
+    const offset = (page - 1) * limit;
+
     const list = await db
       .select({
         id: conversations.id,
         title: conversations.title,
         createdAt: conversations.createdAt,
+        messageCount: sql<number>`count(${messages.id})::int`,
       })
       .from(conversations)
+      .leftJoin(messages, eq(messages.conversation_id, conversations.id))
       .where(eq(conversations.organization_id, user.organization_id))
+      .groupBy(conversations.id)
       .orderBy(desc(conversations.createdAt))
-      .limit(200);
-
-    if (list.length === 0) {
-      return NextResponse.json({ conversations: [] });
-    }
-
-    const ids = list.map((c) => c.id);
-    const messageRows = await db
-      .select({ conversation_id: messages.conversation_id })
-      .from(messages)
-      .where(inArray(messages.conversation_id, ids));
-
-    const countMap = new Map<string, number>();
-    for (const row of messageRows) {
-      countMap.set(row.conversation_id, (countMap.get(row.conversation_id) ?? 0) + 1);
-    }
+      .limit(limit)
+      .offset(offset);
 
     return NextResponse.json({
       conversations: list.map((c) => ({
         id: c.id,
         title: c.title || "New conversation",
         createdAt: c.createdAt,
-        messageCount: countMap.get(c.id) ?? 0,
+        messageCount: c.messageCount ?? 0,
       })),
+      pagination: {
+        page,
+        limit,
+        hasMore: list.length === limit,
+      },
     });
   } catch (error) {
     console.error("Error fetching conversations:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
