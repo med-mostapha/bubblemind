@@ -25,6 +25,10 @@ export default function DashboardPage() {
   useEffect(() => {
     const bootstrap = async () => {
       const response = await fetch("/api/auth/check");
+      if (!response.ok) {
+        router.push("/api/auth");
+        return;
+      }
       const user = await response.json();
       if (!user) {
         router.push("/api/auth");

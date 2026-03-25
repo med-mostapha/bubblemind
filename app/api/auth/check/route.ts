@@ -3,5 +3,10 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   const user = await isAuthorized();
-  return NextResponse.json(user || null);
+
+  if (!user) {
+    return NextResponse.json(null, { status: 401 });
+  }
+
+  return NextResponse.json(user);
 }
