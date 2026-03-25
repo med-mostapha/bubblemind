@@ -50,6 +50,13 @@
       "when": 1772841762296,
       "tag": "0006_aberrant_komodo",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1774476471246,
+      "tag": "0007_cheerful_spot",
+      "breakpoints": true
     }
   ]
 }
