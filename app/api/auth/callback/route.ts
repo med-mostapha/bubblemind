@@ -1,25 +1,37 @@
 import scaleKit from "@/lib/scalekit";
-import { NextURL } from "next/dist/server/web/next-url";
 import { NextRequest, NextResponse } from "next/server";
 import { user as User } from "@/db/schema";
 import { db } from "@/db/client";
 import { eq } from "drizzle-orm";
+import { cookies } from "next/headers";
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
   const code = searchParams.get("code");
   const error = searchParams.get("error");
   const error_description = searchParams.get("error_description");
 
+  const state = searchParams.get("state");
+  const cookieStore = await cookies();
+  const savedState = cookieStore.get("sk_state")?.value;
+
+  if (!state || !savedState || state !== savedState) {
+    return new Response("Authentication failed: Invalid state parameter", {
+      status: 400,
+    });
+  }
+
+  cookieStore.delete("sk_state");
+
   if (error) {
     console.error("Authentication error:", error, error_description);
     return new Response("Authentication failed: " + error_description, {
-      status: 400
+      status: 400,
     });
   }
   if (!code) {
     console.error("No authorization code found in the callback URL.");
     return new Response("Authentication failed: No code provided", {
-      status: 400
+      status: 400,
     });
   }
 
@@ -43,7 +55,7 @@ export async function GET(req: NextRequest) {
       console.error("Organization ID not found in token claims", claims);
       return NextResponse.json(
         { error: "Organization ID not found in token claims", claims },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -56,14 +68,14 @@ export async function GET(req: NextRequest) {
       await db.insert(User).values({
         email: user.email,
         name: user.name || "Anonymous",
-        organization_id: organizationId
+        organization_id: organizationId,
       });
     }
 
     const response = NextResponse.redirect(new URL("/", req.url));
     const userSession = {
       email: user.email,
-      organization_id: organizationId
+      organization_id: organizationId,
     };
 
     response.cookies.set("user_session", JSON.stringify(userSession), {
@@ -71,7 +83,7 @@ export async function GET(req: NextRequest) {
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
-      maxAge: 60 * 60 * 24 * 7 // 1 week
+      maxAge: 60 * 60 * 24 * 7, // 1 week
     });
 
     return response;
@@ -87,8 +99,8 @@ export async function GET(req: NextRequest) {
     return new Response(
       "Authentication failed to authenticate user. See server logs for details.",
       {
-        status: 500
-      }
+        status: 500,
+      },
     );
   }
 }
