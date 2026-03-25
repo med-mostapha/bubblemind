@@ -4,6 +4,13 @@ import { widgetSettings } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
+const DEFAULT_WIDGET = {
+  bot_name: "Support Assistant",
+  primary_color: "#0EA5E9",
+  greeting_message: "Hi! How can we help you today?",
+  position: "bottom-right",
+};
+
 export async function GET() {
   try {
     const user = await isAuthorized();
@@ -11,26 +18,20 @@ export async function GET() {
       return new Response("Unauthorized", { status: 401 });
     }
 
-    const existing = await db
+    const [existing] = await db
       .select()
       .from(widgetSettings)
-      .where(eq(widgetSettings.organization_id, user.organization_id));
+      .where(eq(widgetSettings.organization_id, user.organization_id))
+      .limit(1);
 
-    const settings =
-      existing[0] || {
-        bot_name: "Support Assistant",
-        primary_color: "#0EA5E9",
-        greeting_message: "Hi! How can we help you today?",
-        position: "bottom-right"
-      };
-
-    return NextResponse.json({ settings });
+    return NextResponse.json({
+      settings: existing ?? DEFAULT_WIDGET,
+    });
   } catch (error) {
     console.error("Error fetching widget config:", error);
-    const errorMsg = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: "Internal Server Error", details: errorMsg },
-      { status: 500 }
+      { error: "Internal Server Error" },
+      { status: 500 },
     );
   }
 }
@@ -42,42 +43,34 @@ export async function POST(req: NextRequest) {
       return new Response("Unauthorized", { status: 401 });
     }
 
-    const body = await req.json();
-    const { bot_name, primary_color, greeting_message, position } = body;
+    const { bot_name, primary_color, greeting_message, position } =
+      await req.json();
 
-    const existing = await db
-      .select()
-      .from(widgetSettings)
-      .where(eq(widgetSettings.organization_id, user.organization_id));
-
-    if (existing[0]) {
-      await db
-        .update(widgetSettings)
-        .set({
-          bot_name,
-          primary_color,
-          greeting_message,
-          position
-        })
-        .where(eq(widgetSettings.id, existing[0].id));
-    } else {
-      await db.insert(widgetSettings).values({
+    await db
+      .insert(widgetSettings)
+      .values({
         organization_id: user.organization_id,
         bot_name,
         primary_color,
         greeting_message,
-        position
+        position,
+      })
+      .onConflictDoUpdate({
+        target: widgetSettings.organization_id,
+        set: {
+          bot_name,
+          primary_color,
+          greeting_message,
+          position,
+        },
       });
-    }
 
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error updating widget config:", error);
-    const errorMsg = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: "Internal Server Error", details: errorMsg },
-      { status: 500 }
+      { error: "Internal Server Error" },
+      { status: 500 },
     );
   }
 }
-
