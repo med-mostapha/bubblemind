@@ -4,6 +4,15 @@ import { user as User } from "@/db/schema";
 import { db } from "@/db/client";
 import { eq } from "drizzle-orm";
 import { cookies } from "next/headers";
+
+function extractOrganizationId(claims: Record<string, unknown>): string | null {
+  if (typeof claims.organization_id === "string") return claims.organization_id;
+  if (claims.org && typeof (claims.org as any).id === "string")
+    return (claims.org as any).id;
+  if (typeof claims.oid === "string") return claims.oid;
+  return null;
+}
+
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
   const code = searchParams.get("code");
@@ -28,33 +37,28 @@ export async function GET(req: NextRequest) {
       status: 400,
     });
   }
+
   if (!code) {
-    console.error("No authorization code found in the callback URL.");
     return new Response("Authentication failed: No code provided", {
       status: 400,
     });
   }
 
   try {
-    const rediretctUri = process.env.SCALEKIT_REDIRECT_URI!;
-
-    const authResult = await scaleKit.authenticateWithCode(code, rediretctUri);
-
+    const redirectUri = process.env.SCALEKIT_REDIRECT_URI!;
+    const authResult = await scaleKit.authenticateWithCode(code, redirectUri);
     const { user, idToken } = authResult;
 
-    const claims = await scaleKit.validateToken(idToken);
-    console.log("ScaleKit token claims:", claims);
-
-    const organizationId =
-      (claims as any).organization_id ||
-      ((claims as any).org && (claims as any).org.id) ||
-      (claims as any).oid ||
-      null;
+    const claims = (await scaleKit.validateToken(idToken)) as Record<
+      string,
+      unknown
+    >;
+    const organizationId = extractOrganizationId(claims);
 
     if (!organizationId) {
       console.error("Organization ID not found in token claims", claims);
       return NextResponse.json(
-        { error: "Organization ID not found in token claims", claims },
+        { error: "Organization ID not found in token claims" },
         { status: 500 },
       );
     }
@@ -64,7 +68,9 @@ export async function GET(req: NextRequest) {
       .from(User)
       .where(eq(User.email, user.email));
 
-    if (existing.length === 0) {
+    const isNewUser = existing.length === 0;
+
+    if (isNewUser) {
       await db.insert(User).values({
         email: user.email,
         name: user.name || "Anonymous",
@@ -72,35 +78,33 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    const response = NextResponse.redirect(new URL("/", req.url));
-    const userSession = {
-      email: user.email,
-      organization_id: organizationId,
-    };
+    const redirectTo = new URL("/dashboard", req.url);
+    const response = NextResponse.redirect(redirectTo);
 
-    response.cookies.set("user_session", JSON.stringify(userSession), {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60 * 24 * 7, // 1 week
-    });
+    response.cookies.set(
+      "user_session",
+      JSON.stringify({
+        email: user.email,
+        organization_id: organizationId,
+      }),
+      {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7,
+      },
+    );
 
     return response;
   } catch (error) {
-    // Enhanced error logging for debugging
     console.error("Error during authentication:", error);
     if (error instanceof Error) {
       console.error("Error message:", error.message);
       if (error.stack) console.error("Error stack:", error.stack);
-    } else {
-      console.error("Error details:", JSON.stringify(error));
     }
-    return new Response(
-      "Authentication failed to authenticate user. See server logs for details.",
-      {
-        status: 500,
-      },
-    );
+    return new Response("Authentication failed. See server logs for details.", {
+      status: 500,
+    });
   }
 }
