@@ -1,23 +1,21 @@
 "use client";
-import { isAuthorized } from "@/lib/isAuthorized";
+import { useUser } from "@/hooks/useUser";
 import Link from "next/link";
 import React, { useState } from "react";
 
 function Navbar() {
-  const user = isAuthorized();
-
+  const { user } = useUser();
   const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <nav className="relative z-50 flex justify-center items-center bg-white rounded-2xl shadow-lg border border-gray-200 mx-auto w-full md:w-[90vw] lg:w-[80vw] h-20 mt-6">
       <div className="w-full max-w-4xl mx-auto px-4 flex items-center justify-between">
-        {/* Brand */}
         <Link href="/" className="flex items-center gap-2">
           <span className="text-xl font-semibold tracking-tight text-black rounded-lg px-3 py-1">
             OneMinute Support
           </span>
         </Link>
 
-        {/* Desktop Nav + Auth Button on right */}
         <div className="hidden md:flex items-center gap-6 ml-auto">
           <Link
             href="#features"
@@ -52,13 +50,11 @@ function Navbar() {
           )}
         </div>
 
-        {/* Mobile Hamburger */}
         <button
-          className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg border border-gray-300 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+          className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg border border-gray-300 bg-white shadow-sm"
           aria-label="Open menu"
           onClick={() => setMenuOpen(!menuOpen)}
         >
-          <span className="sr-only">Open menu</span>
           <svg
             width="24"
             height="24"
@@ -76,7 +72,6 @@ function Navbar() {
         </button>
       </div>
 
-      {/* Mobile Menu */}
       {menuOpen && (
         <div className="absolute top-20 left-0 w-full bg-white rounded-b-2xl shadow-lg border-t border-gray-200 z-40">
           <div className="px-4 py-4 flex flex-col gap-2 items-center">
