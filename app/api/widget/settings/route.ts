@@ -10,7 +10,7 @@ const DEFAULT_SETTINGS = {
   bubble_icon: "💬",
   bubble_icon_url: "",
   bubble_size: "medium",
-  bubble_animation: "true",
+  bubble_animation: true,
   tooltip_text: "Need help? Chat with us",
   window_primary_color: "#22C55E",
   window_background_color: "#020617",
@@ -19,9 +19,9 @@ const DEFAULT_SETTINGS = {
   window_header_title: "AI Assistant",
   window_header_subtitle: "Ask anything about our services",
   company_logo_url: "",
-  use_logo_as_bubble: "true",
+  use_logo_as_bubble: false,
   opening_message: "Hello 👋\nHow can I help you today?",
-  opening_message_enabled: "true",
+  opening_message_enabled: true,
 };
 
 const ALLOWED_FIELDS = [
@@ -76,7 +76,7 @@ export async function GET() {
           project_id: user.organization_id,
           bot_id,
           ...DEFAULT_SETTINGS,
-          updated_at: new Date().toISOString(),
+          updated_at: new Date(),
         })
         .returning();
       record = inserted;
@@ -84,7 +84,7 @@ export async function GET() {
       const bot_id = createBotId(user.organization_id);
       await db
         .update(chatWidgetSettings)
-        .set({ bot_id, updated_at: new Date().toISOString() })
+        .set({ bot_id, updated_at: new Date() })
         .where(eq(chatWidgetSettings.id, record.id));
       record = { ...record, bot_id };
     }
@@ -125,7 +125,7 @@ export async function POST(req: NextRequest) {
         .set({
           ...safe,
           bot_id: currentBotId,
-          updated_at: new Date().toISOString(),
+          updated_at: new Date(),
         })
         .where(eq(chatWidgetSettings.id, existing[0].id));
     } else {
@@ -135,7 +135,7 @@ export async function POST(req: NextRequest) {
         bot_id,
         ...DEFAULT_SETTINGS,
         ...safe,
-        updated_at: new Date().toISOString(),
+        updated_at: new Date(),
       });
     }
 
