@@ -15,7 +15,6 @@ const ChatPreview = () => (
     whileInView={{ y: 0, opacity: 1 }}
     transition={{ delay: 0.5, duration: 0.8 }}
     className="relative group/chat"
-    Wall-of-text-avoidance-layer
   >
     <div className="bg-[#0A0A0A]/80 backdrop-blur-2xl rounded-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden max-w-[320px] ml-auto transform rotate-2 group-hover/chat:rotate-0 transition-transform duration-700">
       {/* Header */}
@@ -39,7 +38,7 @@ const ChatPreview = () => (
         </div>
 
         <div className="flex justify-start gap-3">
-          <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-emerald-400 to-blue-500 flex-shrink-0" />
+          <div className="w-6 h-6 rounded-full bg-linear-to-tr from-emerald-400 to-blue-500 shrink-0" />
           <div className="bg-white/5 text-gray-300 px-4 py-2 rounded-2xl rounded-tl-none border border-white/10">
             Oui, nous livrons partout à{" "}
             <span className="text-white font-medium">Nouakchott</span>, y
@@ -57,12 +56,12 @@ const FeatureCard = ({
   description,
   children,
   variant = "small",
-  className = ""
+  className = "",
 }: {
   title: string;
   description: string;
   children?: React.ReactNode;
-  variant?: "small" | "medium" | "large";
+  variant?: "small" | "medium" | "large" | "side";
   className?: string;
 }) => (
   <motion.div
@@ -70,11 +69,11 @@ const FeatureCard = ({
     transition={{ type: "spring", stiffness: 300 }}
     className={cn(
       "relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-[#0A0A0A] p-8 md:p-10 flex flex-col justify-between group",
-      variant === "large" && "md:col-span-7 min-h-[540px]",
-      variant === "medium" && "md:col-span-8 min-h-[380px]",
-      variant === "small" && "md:col-span-4 min-h-[320px]",
-      variant === "side" && "md:col-span-5 min-h-[260px]", // specific for the right stack
-      className
+      variant === "large" && "md:col-span-7 min-h-135",
+      variant === "medium" && "md:col-span-8 min-h-95",
+      variant === "small" && "md:col-span-4 min-h-80",
+      variant === "side" && "md:col-span-5 min-h-65", // specific for the right stack
+      className,
     )}
   >
     {/* Background Glow */}
@@ -102,11 +101,11 @@ export default function FeaturesSection() {
     <section className="relative w-full py-32 px-6 bg-[#030303] text-white overflow-hidden">
       {/* Background Depth Elements */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full pointer-events-none">
-        <div className="absolute top-1/4 left-0 w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-[140px]" />
-        <div className="absolute bottom-1/4 right-0 w-[400px] h-[400px] bg-emerald-600/10 rounded-full blur-[140px]" />
+        <div className="absolute top-1/4 left-0 w-100 h-100 bg-blue-600/10 rounded-full blur-[140px]" />
+        <div className="absolute bottom-1/4 right-0 w-100 h-100 bg-emerald-600/10 rounded-full blur-[140px]" />
       </div>
 
-      <div className="max-w-[1200px] mx-auto relative z-10">
+      <div className="max-w-300 mx-auto relative z-10">
         {/* Header Section */}
         <header className="mb-20 space-y-6">
           <motion.div
@@ -174,7 +173,7 @@ export default function FeaturesSection() {
                   initial={{ height: 0 }}
                   whileInView={{ height: `${h}%` }}
                   transition={{ delay: i * 0.1, duration: 1 }}
-                  className="flex-1 bg-gradient-to-t from-emerald-500/40 to-emerald-500/5 rounded-t-sm"
+                  className="flex-1 bg-linear-to-t from-emerald-500/40 to-emerald-500/5 rounded-t-sm"
                 />
               ))}
             </div>
