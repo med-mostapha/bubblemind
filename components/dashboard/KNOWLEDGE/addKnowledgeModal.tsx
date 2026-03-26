@@ -10,14 +10,14 @@ import {
   Link2,
   ChevronRight,
   ShieldCheck,
-  Zap
+  Zap,
 } from "lucide-react";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -32,7 +32,7 @@ export default function SovereignKnowledgeModal({
   isLoading,
   existingSources = [],
   defaultTab = "website",
-  setdefaultTab
+  setdefaultTab,
 }: any) {
   const [activeTab, setActiveTab] = useState(defaultTab);
   const [error, setError] = useState<string | null>(null);
@@ -66,14 +66,14 @@ export default function SovereignKnowledgeModal({
         activeTab === "upload"
           ? {
               type: activeTab,
-              file: uploadedFile
+              file: uploadedFile,
             }
           : {
               type: activeTab,
               url: websiteUrl,
               title: docsTitle,
-              content: docsContent
-            }
+              content: docsContent,
+            },
       );
       setIsOpen(false);
       resetForm();
@@ -91,10 +91,11 @@ export default function SovereignKnowledgeModal({
       }}
     >
       {/* Increased Width to 800px for a "Professional Dashboard" feel */}
-      <DialogContent className="sm:max-w-[800px] bg-[#050505] border-white/[0.08] text-white p-0 gap-0 overflow-hidden shadow-[0_0_100px_-20px_rgba(16,185,129,0.1)]">
-        <div className="flex h-[550px]">
+      <DialogContent className="sm:max-w-200 bg-[#050505] border-white/8 text-white p-0 gap-0 overflow-hidden shadow-[0_0_100px_-20px_rgba(16,185,129,0.1)]">
+        <DialogTitle className="sr-only">Data Ingestion</DialogTitle>
+        <div className="flex h-137.5">
           {/* LEFT SIDEBAR: Context & Status */}
-          <div className="w-1/3 bg-zinc-950/50 border-r border-white/[0.05] p-8 flex flex-col justify-between">
+          <div className="w-1/3 bg-zinc-950/50 border-r border-white/5 p-8 flex flex-col justify-between">
             <div className="space-y-6">
               <div className="h-10 w-10 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex items-center justify-center">
                 <ShieldCheck className="w-5 h-5 text-emerald-500" />
@@ -144,7 +145,7 @@ export default function SovereignKnowledgeModal({
               className="flex-1 flex flex-col"
             >
               <div className="px-8 pt-8">
-                <TabsList className="bg-white/[0.03] border border-white/[0.05] p-1 h-12 w-full justify-between rounded-xl">
+                <TabsList className="bg-white/3 border border-white/5 p-1 h-12 w-full justify-between rounded-xl">
                   <TabsTrigger
                     value="website"
                     className="flex-1 rounded-lg text-[11px] font-bold uppercase tracking-wider data-[state=active]:bg-white/10"
@@ -183,7 +184,7 @@ export default function SovereignKnowledgeModal({
                       <Link2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-700 group-focus-within:text-emerald-500 transition-colors" />
                       <Input
                         placeholder="https://docs.yourdomain.com"
-                        className="bg-white/[0.02] border-white/[0.08] focus:border-emerald-500/50 h-14 pl-12 rounded-xl text-base placeholder:text-zinc-800 transition-all"
+                        className="bg-white/2 border-white/8 focus:border-emerald-500/50 h-14 pl-12 rounded-xl text-base placeholder:text-zinc-800 transition-all"
                         value={websiteUrl}
                         onChange={(e) => setWebsiteUrl(e.target.value)}
                       />
@@ -197,20 +198,20 @@ export default function SovereignKnowledgeModal({
                 >
                   <Input
                     placeholder="Title Identifier"
-                    className="bg-white/[0.02] border-white/[0.08] h-12 rounded-xl"
+                    className="bg-white/2 border-white/8 h-12 rounded-xl"
                     value={docsTitle}
                     onChange={(e) => setDocsTitle(e.target.value)}
                   />
                   <textarea
                     placeholder="Input knowledge payload..."
-                    className="flex-1 bg-white/[0.02] border border-white/[0.08] rounded-xl p-4 text-sm text-white focus:border-emerald-500/50 outline-none transition-all resize-none placeholder:text-zinc-800"
+                    className="flex-1 bg-white/2 border border-white/8 rounded-xl p-4 text-sm text-white focus:border-emerald-500/50 outline-none transition-all resize-none placeholder:text-zinc-800"
                     value={docsContent}
                     onChange={(e) => setDocsContent(e.target.value)}
                   />
                 </TabsContent>
 
                 <TabsContent value="upload" className="mt-0 h-full">
-                  <label className="flex flex-col items-center justify-center w-full h-full rounded-2xl border-2 border-dashed border-white/[0.05] bg-white/[0.01] hover:bg-white/[0.03] transition-all cursor-pointer group">
+                  <label className="flex flex-col items-center justify-center w-full h-full rounded-2xl border-2 border-dashed border-white/5 bg-white/1 hover:bg-white/3 transition-all cursor-pointer group">
                     <div className="text-center p-6">
                       <Upload className="w-8 h-8 text-zinc-700 group-hover:text-emerald-500 transition-colors mx-auto mb-4" />
                       <p className="text-sm font-bold text-zinc-400 group-hover:text-white transition-colors uppercase tracking-tighter">
