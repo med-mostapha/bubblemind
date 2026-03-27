@@ -5,23 +5,18 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-
-interface ChatWidgetSettingsModalProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}
 
 interface ChatWidgetSettings {
   bubble_position: string;
   bubble_color: string;
   bubble_icon: string;
   bubble_size: string;
-  bubble_animation: string;
+  bubble_animation: boolean;
   tooltip_text: string;
   window_primary_color: string;
   window_background_color: string;
@@ -31,7 +26,7 @@ interface ChatWidgetSettings {
   window_header_subtitle: string;
   company_logo_url: string;
   opening_message: string;
-  opening_message_enabled: string;
+  opening_message_enabled: boolean;
 }
 
 const DEFAULT_STATE: ChatWidgetSettings = {
@@ -39,7 +34,7 @@ const DEFAULT_STATE: ChatWidgetSettings = {
   bubble_color: "#22C55E",
   bubble_icon: "💬",
   bubble_size: "medium",
-  bubble_animation: "true",
+  bubble_animation: true,
   tooltip_text: "Need help? Chat with us",
   window_primary_color: "#22C55E",
   window_background_color: "#020617",
@@ -49,61 +44,63 @@ const DEFAULT_STATE: ChatWidgetSettings = {
   window_header_subtitle: "Ask anything about our services",
   company_logo_url: "",
   opening_message: "Hello 👋\nHow can I help you today?",
-  opening_message_enabled: "true"
+  opening_message_enabled: true,
 };
+
+interface ChatWidgetSettingsModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
 
 export default function ChatWidgetSettingsModal({
   open,
-  onOpenChange
+  onOpenChange,
 }: ChatWidgetSettingsModalProps) {
-  const [settings, setSettings] =
-    useState<ChatWidgetSettings>(DEFAULT_STATE);
+  const [settings, setSettings] = useState<ChatWidgetSettings>(DEFAULT_STATE);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!open) return;
-
     const fetchSettings = async () => {
       try {
         setLoading(true);
+        setError(null);
         const res = await fetch("/api/widget/settings");
-        if (!res.ok) return;
+        if (!res.ok) throw new Error("Failed to load settings");
         const data = await res.json();
         if (data?.settings) {
           setSettings((prev) => ({ ...prev, ...data.settings }));
         }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to load");
       } finally {
         setLoading(false);
       }
     };
-
     fetchSettings();
   }, [open]);
 
-  const handleChange = (field: keyof ChatWidgetSettings, value: string) => {
+  const handleChange = (field: keyof ChatWidgetSettings, value: string) =>
     setSettings((prev) => ({ ...prev, [field]: value }));
-  };
 
-  const handleToggle = (field: keyof ChatWidgetSettings) => {
-    setSettings((prev) => ({
-      ...prev,
-      [field]: prev[field] === "true" ? "false" : "true"
-    }));
-  };
+  const handleToggle = (field: keyof ChatWidgetSettings) =>
+    setSettings((prev) => ({ ...prev, [field]: !prev[field] }));
 
   const handleSave = async () => {
     try {
       setSaving(true);
+      setError(null);
       const res = await fetch("/api/widget/settings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(settings)
+        body: JSON.stringify(settings),
       });
-      if (!res.ok) {
-        throw new Error("Failed to save settings");
-      }
+      if (!res.ok) throw new Error("Failed to save settings");
       onOpenChange(false);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to save");
     } finally {
       setSaving(false);
     }
@@ -111,7 +108,7 @@ export default function ChatWidgetSettingsModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[720px] bg-[#050505] border-white/10 text-white max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-180 bg-[#050505] border-white/10 text-white max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold tracking-tight">
             Chat Widget Settings
@@ -122,7 +119,13 @@ export default function ChatWidgetSettingsModal({
           <div className="text-xs text-zinc-500 py-6">Loading settings...</div>
         ) : (
           <div className="space-y-8 text-sm">
-            {/* Section 1: Bubble */}
+            {error && (
+              <div className="text-xs text-red-400 bg-red-950/40 border border-red-500/20 rounded-lg px-3 py-2">
+                {error}
+              </div>
+            )}
+
+            {/* Bubble */}
             <section className="space-y-4">
               <h3 className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-500">
                 Bubble Appearance
@@ -137,7 +140,7 @@ export default function ChatWidgetSettingsModal({
                     onChange={(e) =>
                       handleChange("bubble_position", e.target.value)
                     }
-                    className="bg-zinc-900 border border-white/10 rounded-md px-3 py-2 text-xs outline-none"
+                    className="bg-zinc-900 border border-white/10 rounded-md px-3 py-2 text-xs outline-none w-full"
                   >
                     <option value="bottom-right">Bottom Right</option>
                     <option value="bottom-left">Bottom Left</option>
@@ -148,7 +151,6 @@ export default function ChatWidgetSettingsModal({
                     Bubble Color
                   </Label>
                   <Input
-                    type="text"
                     value={settings.bubble_color}
                     onChange={(e) =>
                       handleChange("bubble_color", e.target.value)
@@ -162,7 +164,6 @@ export default function ChatWidgetSettingsModal({
                     Bubble Icon
                   </Label>
                   <Input
-                    type="text"
                     value={settings.bubble_icon}
                     onChange={(e) =>
                       handleChange("bubble_icon", e.target.value)
@@ -180,7 +181,7 @@ export default function ChatWidgetSettingsModal({
                     onChange={(e) =>
                       handleChange("bubble_size", e.target.value)
                     }
-                    className="bg-zinc-900 border border-white/10 rounded-md px-3 py-2 text-xs outline-none"
+                    className="bg-zinc-900 border border-white/10 rounded-md px-3 py-2 text-xs outline-none w-full"
                   >
                     <option value="small">Small</option>
                     <option value="medium">Medium</option>
@@ -192,7 +193,6 @@ export default function ChatWidgetSettingsModal({
                     Tooltip Text
                   </Label>
                   <Input
-                    type="text"
                     value={settings.tooltip_text}
                     onChange={(e) =>
                       handleChange("tooltip_text", e.target.value)
@@ -201,11 +201,11 @@ export default function ChatWidgetSettingsModal({
                     placeholder="Need help? Chat with us"
                   />
                 </div>
-                <div className="space-y-2 flex items-center gap-2 mt-6">
+                <div className="flex items-center gap-2 mt-6">
                   <input
                     id="bubble-animation"
                     type="checkbox"
-                    checked={settings.bubble_animation === "true"}
+                    checked={!!settings.bubble_animation} // ✅
                     onChange={() => handleToggle("bubble_animation")}
                     className="h-3 w-3 rounded border-white/30 bg-zinc-900"
                   />
@@ -219,7 +219,7 @@ export default function ChatWidgetSettingsModal({
               </div>
             </section>
 
-            {/* Section 2: Window */}
+            {/* Window */}
             <section className="space-y-4">
               <h3 className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-500">
                 Chat Window
@@ -230,7 +230,6 @@ export default function ChatWidgetSettingsModal({
                     Primary Color
                   </Label>
                   <Input
-                    type="text"
                     value={settings.window_primary_color}
                     onChange={(e) =>
                       handleChange("window_primary_color", e.target.value)
@@ -244,7 +243,6 @@ export default function ChatWidgetSettingsModal({
                     Background Color
                   </Label>
                   <Input
-                    type="text"
                     value={settings.window_background_color}
                     onChange={(e) =>
                       handleChange("window_background_color", e.target.value)
@@ -258,7 +256,6 @@ export default function ChatWidgetSettingsModal({
                     Border Radius
                   </Label>
                   <Input
-                    type="text"
                     value={settings.window_border_radius}
                     onChange={(e) =>
                       handleChange("window_border_radius", e.target.value)
@@ -272,7 +269,6 @@ export default function ChatWidgetSettingsModal({
                     Font Family
                   </Label>
                   <Input
-                    type="text"
                     value={settings.window_font_family}
                     onChange={(e) =>
                       handleChange("window_font_family", e.target.value)
@@ -286,7 +282,6 @@ export default function ChatWidgetSettingsModal({
                     Header Title
                   </Label>
                   <Input
-                    type="text"
                     value={settings.window_header_title}
                     onChange={(e) =>
                       handleChange("window_header_title", e.target.value)
@@ -300,7 +295,6 @@ export default function ChatWidgetSettingsModal({
                     Header Subtitle
                   </Label>
                   <Input
-                    type="text"
                     value={settings.window_header_subtitle}
                     onChange={(e) =>
                       handleChange("window_header_subtitle", e.target.value)
@@ -314,7 +308,6 @@ export default function ChatWidgetSettingsModal({
                     Company Logo URL
                   </Label>
                   <Input
-                    type="text"
                     value={settings.company_logo_url}
                     onChange={(e) =>
                       handleChange("company_logo_url", e.target.value)
@@ -326,7 +319,7 @@ export default function ChatWidgetSettingsModal({
               </div>
             </section>
 
-            {/* Section 3: Opening Message */}
+            {/* Opening Message */}
             <section className="space-y-4">
               <h3 className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-500">
                 Opening Message
@@ -336,10 +329,8 @@ export default function ChatWidgetSettingsModal({
                   <input
                     id="opening-message-enabled"
                     type="checkbox"
-                    checked={settings.opening_message_enabled === "true"}
-                    onChange={() =>
-                      handleToggle("opening_message_enabled")
-                    }
+                    checked={!!settings.opening_message_enabled} // ✅
+                    onChange={() => handleToggle("opening_message_enabled")}
                     className="h-3 w-3 rounded border-white/30 bg-zinc-900"
                   />
                   <Label
@@ -354,13 +345,9 @@ export default function ChatWidgetSettingsModal({
                   onChange={(e) =>
                     handleChange("opening_message", e.target.value)
                   }
-                  className="w-full min-h-[90px] bg-zinc-900 border border-white/10 rounded-md px-3 py-2 text-xs outline-none resize-none"
+                  className="w-full min-h-22.5 bg-zinc-900 border border-white/10 rounded-md px-3 py-2 text-xs outline-none resize-none"
                   placeholder={"Hello 👋\nHow can I help you today?"}
                 />
-                <p className="text-[10px] text-zinc-500">
-                  This message is shown automatically when the chat opens for
-                  the first time. Keep it short and welcoming.
-                </p>
               </div>
             </section>
 
@@ -388,4 +375,3 @@ export default function ChatWidgetSettingsModal({
     </Dialog>
   );
 }
-
