@@ -8,7 +8,7 @@ interface ChatWidgetSettings {
   bubble_icon: string;
   bubble_icon_url: string;
   bubble_size: string;
-  bubble_animation: string;
+  bubble_animation: boolean; // ✅
   tooltip_text: string;
   window_primary_color: string;
   window_background_color: string;
@@ -17,17 +17,15 @@ interface ChatWidgetSettings {
   window_header_title: string;
   window_header_subtitle: string;
   company_logo_url: string;
-  use_logo_as_bubble: string;
+  use_logo_as_bubble: boolean; // ✅
   opening_message: string;
-  opening_message_enabled: string;
+  opening_message_enabled: boolean; // ✅
 }
 
 interface Props {
   settings: ChatWidgetSettings | null;
   onChange: (next: ChatWidgetSettings) => void;
 }
-
-// ── Reusable micro-components ──────────────────────────────────────────────
 
 function FieldLabel({ children }: { children: React.ReactNode }) {
   return (
@@ -69,7 +67,7 @@ function ColorInput({
   const isValidHex = /^#([0-9A-Fa-f]{3}){1,2}$/.test(value);
   return (
     <div className="flex items-center gap-2 h-8 px-2.5 bg-white border border-[#E5E7EB] rounded-[6px] focus-within:border-[#1F73B7] focus-within:ring-1 focus-within:ring-[#1F73B7]/20 transition-all">
-      <div className="relative flex-shrink-0">
+      <div className="relative shrink-0">
         <div
           className="w-4 h-4 rounded-[3px] border border-[#E5E7EB] cursor-pointer"
           style={{ backgroundColor: isValidHex ? value : "#e5e7eb" }}
@@ -146,23 +144,17 @@ function Toggle({
     <label className="flex items-center gap-2.5 cursor-pointer group">
       <div
         onClick={onChange}
-        className={`relative w-8 h-4.5 rounded-full transition-colors duration-200 ${
-          checked ? "bg-[#1F73B7]" : "bg-[#D1D5DB]"
-        }`}
+        className={`relative rounded-full transition-colors duration-200 ${checked ? "bg-[#1F73B7]" : "bg-[#D1D5DB]"}`}
         style={{ width: 32, height: 18 }}
       >
         <div
-          className={`absolute top-[2px] w-[14px] h-[14px] bg-white rounded-full shadow-sm transition-transform duration-200 ${
-            checked ? "translate-x-[16px]" : "translate-x-[2px]"
-          }`}
+          className={`absolute top-0.5 w-3.5 h-3.5 bg-white rounded-full shadow-sm transition-transform duration-200 ${checked ? "translate-x-4" : "translate-x-0.5"}`}
         />
       </div>
       <span className="text-[12px] text-[#374151] font-medium">{label}</span>
     </label>
   );
 }
-
-// ── Tab definitions ────────────────────────────────────────────────────────
 
 const TABS = [
   {
@@ -223,8 +215,6 @@ const TABS = [
   },
 ];
 
-// ── Live Preview ───────────────────────────────────────────────────────────
-
 function ChatPreview({ settings }: { settings: ChatWidgetSettings }) {
   const [open, setOpen] = useState(true);
   const primary = settings.window_primary_color || "#1F73B7";
@@ -234,10 +224,9 @@ function ChatPreview({ settings }: { settings: ChatWidgetSettings }) {
 
   return (
     <div className="flex flex-col items-end justify-end h-full gap-3 p-6">
-      {/* Chat window */}
       {open && (
         <div
-          className="w-[280px] flex flex-col shadow-2xl overflow-hidden border border-[#E5E7EB]"
+          className="w-70 flex flex-col shadow-2xl overflow-hidden border border-[#E5E7EB]"
           style={{
             borderRadius: radius,
             backgroundColor: bg,
@@ -245,9 +234,8 @@ function ChatPreview({ settings }: { settings: ChatWidgetSettings }) {
             height: 360,
           }}
         >
-          {/* Header */}
           <div
-            className="px-4 py-3 flex items-center gap-3 flex-shrink-0"
+            className="px-4 py-3 flex items-center gap-3 shrink-0"
             style={{ backgroundColor: primary }}
           >
             {settings.company_logo_url ? (
@@ -284,22 +272,18 @@ function ChatPreview({ settings }: { settings: ChatWidgetSettings }) {
             </button>
           </div>
 
-          {/* Messages */}
           <div className="flex-1 overflow-hidden px-3 py-3 flex flex-col gap-2">
-            {settings.opening_message_enabled === "true" && (
+            {settings.opening_message_enabled && (
               <div className="flex items-end gap-2">
                 <div
-                  className="w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center text-white text-[8px] font-bold"
+                  className="w-5 h-5 rounded-full shrink-0 flex items-center justify-center text-white text-[8px] font-bold"
                   style={{ backgroundColor: primary }}
                 >
                   AI
                 </div>
                 <div
                   className="text-[11px] px-3 py-2 rounded-[10px] rounded-bl-[3px] max-w-[85%] leading-relaxed"
-                  style={{
-                    backgroundColor: `${primary}15`,
-                    color: "#374151",
-                  }}
+                  style={{ backgroundColor: `${primary}15`, color: "#374151" }}
                 >
                   {settings.opening_message || "Hello 👋\nHow can I help?"}
                 </div>
@@ -315,14 +299,13 @@ function ChatPreview({ settings }: { settings: ChatWidgetSettings }) {
             </div>
           </div>
 
-          {/* Input */}
-          <div className="px-3 py-2.5 border-t border-[#F3F4F6] flex-shrink-0">
+          <div className="px-3 py-2.5 border-t border-[#F3F4F6] shrink-0">
             <div className="flex items-center gap-2 h-8 px-3 bg-[#F9FAFB] border border-[#E5E7EB] rounded-full">
               <span className="flex-1 text-[11px] text-[#9CA3AF]">
                 Type a message…
               </span>
               <div
-                className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
+                className="w-5 h-5 rounded-full flex items-center justify-center shrink-0"
                 style={{ backgroundColor: primary }}
               >
                 <svg
@@ -346,18 +329,15 @@ function ChatPreview({ settings }: { settings: ChatWidgetSettings }) {
         </div>
       )}
 
-      {/* Bubble */}
       <div className="flex items-center gap-2">
-        {settings.tooltip_text && open === false && (
+        {settings.tooltip_text && !open && (
           <div className="bg-[#1F2937] text-white text-[10px] px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap">
             {settings.tooltip_text}
           </div>
         )}
         <button
           onClick={() => setOpen(!open)}
-          className={`flex items-center justify-center shadow-xl transition-transform hover:scale-105 active:scale-95 overflow-hidden ${
-            settings.bubble_animation === "true" ? "animate-pulse" : ""
-          }`}
+          className={`flex items-center justify-center shadow-xl transition-transform hover:scale-105 active:scale-95 overflow-hidden ${settings.bubble_animation ? "animate-pulse" : ""}`} // ✅
           style={{
             backgroundColor: bubbleColor,
             width:
@@ -376,7 +356,7 @@ function ChatPreview({ settings }: { settings: ChatWidgetSettings }) {
           }}
         >
           {(() => {
-            const useLogoAsBubble = settings.use_logo_as_bubble !== "false";
+            const useLogoAsBubble = settings.use_logo_as_bubble;
             const logoUrl =
               settings.company_logo_url || settings.bubble_icon_url;
             if (useLogoAsBubble && logoUrl) {
@@ -409,8 +389,6 @@ function ChatPreview({ settings }: { settings: ChatWidgetSettings }) {
   );
 }
 
-// ── Main component ─────────────────────────────────────────────────────────
-
 export default function ChatWidgetSettingsPanel({ settings, onChange }: Props) {
   const [activeTab, setActiveTab] = useState("bubble");
 
@@ -429,38 +407,27 @@ export default function ChatWidgetSettingsPanel({ settings, onChange }: Props) {
     onChange({ ...settings, [field]: value });
 
   const toggle = (field: keyof ChatWidgetSettings) =>
-    onChange({
-      ...settings,
-      [field]: settings[field] === "true" ? "false" : "true",
-    });
+    onChange({ ...settings, [field]: !settings[field] });
 
   return (
     <div
       className="flex h-full min-h-0 bg-[#F9FAFB] rounded-xl overflow-hidden border border-[#E5E7EB]"
       style={{ height: 540 }}
     >
-      {/* ── LEFT PANEL ── */}
-      <div className="w-[320px] flex-shrink-0 flex flex-col bg-white border-r border-[#E5E7EB]">
-        {/* Panel header */}
-        <div className="px-4 pt-4 pb-0 flex-shrink-0">
+      <div className="w-[320px] shrink-0 flex flex-col bg-white border-r border-[#E5E7EB]">
+        <div className="px-4 pt-4 pb-0 shrink-0">
           <h2 className="text-[13px] font-semibold text-[#111827] mb-0.5">
             Widget Customization
           </h2>
           <p className="text-[11px] text-[#6B7280] mb-3">
             Changes reflect live in the preview
           </p>
-
-          {/* Tabs */}
-          <div className="flex gap-0.5 bg-[#F3F4F6] p-0.5 rounded-[8px]">
+          <div className="flex gap-0.5 bg-[#F3F4F6] p-0.5 rounded-xl">
             {TABS.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex-1 flex items-center justify-center gap-1.5 h-7 rounded-[6px] text-[11px] font-medium transition-all ${
-                  activeTab === tab.id
-                    ? "bg-white text-[#1F73B7] shadow-sm"
-                    : "text-[#6B7280] hover:text-[#374151]"
-                }`}
+                className={`flex-1 flex items-center justify-center gap-1.5 h-7 rounded-[6px] text-[11px] font-medium transition-all ${activeTab === tab.id ? "bg-white text-[#1F73B7] shadow-sm" : "text-[#6B7280] hover:text-[#374151]"}`}
               >
                 <span
                   className={
@@ -475,12 +442,9 @@ export default function ChatWidgetSettingsPanel({ settings, onChange }: Props) {
           </div>
         </div>
 
-        {/* Tab content */}
         <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3 min-h-0 scrollbar-thin">
-          {/* ── LAUNCHER TAB ── */}
           {activeTab === "bubble" && (
             <>
-              {/* Row: Position + Size */}
               <div className="grid grid-cols-2 gap-2.5">
                 <div>
                   <FieldLabel>Position</FieldLabel>
@@ -506,8 +470,6 @@ export default function ChatWidgetSettingsPanel({ settings, onChange }: Props) {
                   />
                 </div>
               </div>
-
-              {/* Color */}
               <div>
                 <FieldLabel>Bubble Color</FieldLabel>
                 <ColorInput
@@ -516,8 +478,6 @@ export default function ChatWidgetSettingsPanel({ settings, onChange }: Props) {
                   placeholder="#1F73B7"
                 />
               </div>
-
-              {/* Icon */}
               <div>
                 <FieldLabel>Icon (emoji or text)</FieldLabel>
                 <TextInput
@@ -526,8 +486,6 @@ export default function ChatWidgetSettingsPanel({ settings, onChange }: Props) {
                   placeholder="💬"
                 />
               </div>
-
-              {/* Icon URL */}
               <div>
                 <FieldLabel>Custom Icon Image URL</FieldLabel>
                 <TextInput
@@ -539,28 +497,16 @@ export default function ChatWidgetSettingsPanel({ settings, onChange }: Props) {
                   Overrides emoji icon when set
                 </p>
               </div>
-
-              {/* Use logo as bubble */}
               <div className="border-t border-[#F3F4F6] pt-2">
                 <Toggle
-                  checked={settings.use_logo_as_bubble !== "false"}
-                  onChange={() =>
-                    set(
-                      "use_logo_as_bubble",
-                      settings.use_logo_as_bubble === "false"
-                        ? "true"
-                        : "false",
-                    )
-                  }
+                  checked={!!settings.use_logo_as_bubble}
+                  onChange={() => toggle("use_logo_as_bubble")}
                   label="Use company logo as bubble"
                 />
                 <p className="text-[10px] text-[#9CA3AF] mt-1">
-                  When on, company logo or custom icon fills the whole bubble;
-                  when off, shows as a small icon inside the colored circle
+                  When on, company logo fills the bubble circle
                 </p>
               </div>
-
-              {/* Tooltip */}
               <div>
                 <FieldLabel>Tooltip Text</FieldLabel>
                 <TextInput
@@ -569,11 +515,9 @@ export default function ChatWidgetSettingsPanel({ settings, onChange }: Props) {
                   placeholder="Need help? Chat with us"
                 />
               </div>
-
-              {/* Divider */}
               <div className="border-t border-[#F3F4F6] pt-2">
                 <Toggle
-                  checked={settings.bubble_animation === "true"}
+                  checked={!!settings.bubble_animation}
                   onChange={() => toggle("bubble_animation")}
                   label="Pulse animation"
                 />
@@ -581,10 +525,8 @@ export default function ChatWidgetSettingsPanel({ settings, onChange }: Props) {
             </>
           )}
 
-          {/* ── WINDOW TAB ── */}
           {activeTab === "window" && (
             <>
-              {/* Colors row */}
               <div className="grid grid-cols-2 gap-2.5">
                 <div>
                   <FieldLabel>Primary Color</FieldLabel>
@@ -603,8 +545,6 @@ export default function ChatWidgetSettingsPanel({ settings, onChange }: Props) {
                   />
                 </div>
               </div>
-
-              {/* Border radius + Font */}
               <div className="grid grid-cols-2 gap-2.5">
                 <div>
                   <FieldLabel>Border Radius</FieldLabel>
@@ -623,8 +563,6 @@ export default function ChatWidgetSettingsPanel({ settings, onChange }: Props) {
                   />
                 </div>
               </div>
-
-              {/* Header */}
               <div>
                 <FieldLabel>Header Title</FieldLabel>
                 <TextInput
@@ -641,8 +579,6 @@ export default function ChatWidgetSettingsPanel({ settings, onChange }: Props) {
                   placeholder="Ask anything about our services"
                 />
               </div>
-
-              {/* Logo */}
               <div>
                 <FieldLabel>Company Logo URL</FieldLabel>
                 <TextInput
@@ -654,10 +590,9 @@ export default function ChatWidgetSettingsPanel({ settings, onChange }: Props) {
             </>
           )}
 
-          {/* ── CONTENT TAB ── */}
           {activeTab === "content" && (
             <>
-              <div className="border border-[#E5E7EB] rounded-[8px] p-3 space-y-2.5">
+              <div className="border border-[#E5E7EB] rounded-xl p-3 space-y-2.5">
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="text-[12px] font-medium text-[#111827]">
@@ -668,7 +603,7 @@ export default function ChatWidgetSettingsPanel({ settings, onChange }: Props) {
                     </div>
                   </div>
                   <Toggle
-                    checked={settings.opening_message_enabled === "true"}
+                    checked={!!settings.opening_message_enabled}
                     onChange={() => toggle("opening_message_enabled")}
                     label=""
                   />
@@ -676,17 +611,15 @@ export default function ChatWidgetSettingsPanel({ settings, onChange }: Props) {
                 <textarea
                   value={settings.opening_message}
                   onChange={(e) => set("opening_message", e.target.value)}
-                  disabled={settings.opening_message_enabled !== "true"}
+                  disabled={!settings.opening_message_enabled}
                   placeholder={"Hello 👋\nHow can I help you today?"}
                   rows={5}
                   className="w-full text-[12px] px-2.5 py-2 bg-[#F9FAFB] border border-[#E5E7EB] rounded-[6px] text-[#111827] placeholder-[#9CA3AF] outline-none focus:border-[#1F73B7] focus:ring-1 focus:ring-[#1F73B7]/20 resize-none transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                 />
               </div>
-
-              {/* Info card */}
-              <div className="flex gap-2 bg-[#EFF6FF] border border-[#DBEAFE] rounded-[8px] px-3 py-2.5">
+              <div className="flex gap-2 bg-[#EFF6FF] border border-[#DBEAFE] rounded-xl px-3 py-2.5">
                 <svg
-                  className="text-[#1F73B7] flex-shrink-0 mt-0.5"
+                  className="text-[#1F73B7] shrink-0 mt-0.5"
                   width="13"
                   height="13"
                   viewBox="0 0 16 16"
@@ -715,8 +648,7 @@ export default function ChatWidgetSettingsPanel({ settings, onChange }: Props) {
           )}
         </div>
 
-        {/* Footer status bar */}
-        <div className="flex-shrink-0 px-4 py-2.5 border-t border-[#F3F4F6] flex items-center gap-1.5">
+        <div className="shrink-0 px-4 py-2.5 border-t border-[#F3F4F6] flex items-center gap-1.5">
           <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
           <span className="text-[10px] text-[#9CA3AF]">
             Live preview updating
@@ -724,9 +656,7 @@ export default function ChatWidgetSettingsPanel({ settings, onChange }: Props) {
         </div>
       </div>
 
-      {/* ── RIGHT PREVIEW PANEL ── */}
       <div className="flex-1 relative bg-[#F3F4F6] overflow-hidden">
-        {/* Grid pattern */}
         <div
           className="absolute inset-0 opacity-40"
           style={{
@@ -735,19 +665,13 @@ export default function ChatWidgetSettingsPanel({ settings, onChange }: Props) {
             backgroundSize: "20px 20px",
           }}
         />
-
-        {/* Label */}
         <div className="absolute top-3 left-4">
           <span className="text-[10px] font-medium text-[#9CA3AF] uppercase tracking-widest">
             Live Preview
           </span>
         </div>
-
-        {/* Preview positioned bottom-right (or bottom-left) */}
         <div
-          className={`absolute bottom-0 ${
-            settings.bubble_position === "bottom-left" ? "left-0" : "right-0"
-          }`}
+          className={`absolute bottom-0 ${settings.bubble_position === "bottom-left" ? "left-0" : "right-0"}`}
           style={{ width: 320 }}
         >
           <ChatPreview settings={settings} />
