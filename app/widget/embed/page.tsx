@@ -16,7 +16,7 @@ interface PublicConfig {
   window_header_subtitle?: string;
   company_logo_url?: string;
   opening_message?: string;
-  opening_message_enabled?: string;
+  opening_message_enabled?: boolean;
 }
 
 const SKELETON_PRIMARY = "#0EA5E9";
@@ -108,7 +108,7 @@ export default function WidgetEmbedPage({ searchParams }: EmbedPageProps) {
   }, [botId]);
 
   const greeting =
-    config?.opening_message_enabled !== "false"
+    config?.opening_message_enabled !== false
       ? (config?.opening_message ?? "Hi! How can we help you today?")
       : "";
 
