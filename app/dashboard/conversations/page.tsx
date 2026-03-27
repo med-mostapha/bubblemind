@@ -47,10 +47,7 @@ function ConversationListSkeleton() {
   return (
     <div className="space-y-1 p-2">
       {[1, 2, 3, 4, 5].map((i) => (
-        <div
-          key={i}
-          className="h-14 rounded-lg bg-white/5 animate-pulse"
-        />
+        <div key={i} className="h-14 rounded-lg bg-white/5 animate-pulse" />
       ))}
     </div>
   );
@@ -99,8 +96,7 @@ export default function ConversationsPage() {
   useEffect(() => {
     const check = async () => {
       const r = await fetch("/api/auth/check");
-      const user = await r.json();
-      if (!user) {
+      if (!r.ok) {
         router.push("/api/auth");
         return;
       }
@@ -136,7 +132,8 @@ export default function ConversationsPage() {
           Conversations
         </h1>
         <p className="text-sm text-zinc-400 mt-1">
-          Chat sessions from your widget and dashboard. Click one to view messages.
+          Chat sessions from your widget and dashboard. Click one to view
+          messages.
         </p>
       </div>
 
@@ -155,7 +152,9 @@ export default function ConversationsPage() {
               <div className="p-6 text-center text-zinc-500 text-sm">
                 <MessageSquare className="w-10 h-10 mx-auto mb-2 opacity-40" />
                 <p>No conversations yet.</p>
-                <p className="text-xs mt-1">They appear here when visitors use your chat widget.</p>
+                <p className="text-xs mt-1">
+                  They appear here when visitors use your chat widget.
+                </p>
               </div>
             ) : (
               <div className="p-2 space-y-1">
@@ -178,7 +177,9 @@ export default function ConversationsPage() {
                     </span>
                     <ChevronRight
                       className={`w-4 h-4 shrink-0 ${
-                        selectedId === c.id ? "text-emerald-400" : "text-zinc-500"
+                        selectedId === c.id
+                          ? "text-emerald-400"
+                          : "text-zinc-500"
                       }`}
                     />
                   </button>
@@ -234,7 +235,9 @@ export default function ConversationsPage() {
                             : "bg-white/5 text-zinc-200 border border-white/5"
                         }`}
                       >
-                        <p className="whitespace-pre-wrap break-words">{m.content}</p>
+                        <p className="whitespace-pre-wrap break-words">
+                          {m.content}
+                        </p>
                         <p className="text-[10px] text-zinc-500 mt-1">
                           {formatDate(m.createdAt)}
                         </p>
