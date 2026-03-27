@@ -80,7 +80,9 @@ export const messages = pgTable(
     id: text("id")
       .primaryKey()
       .default(sql`gen_random_uuid()`),
-    conversation_id: text("conversation_id").notNull(),
+    conversation_id: text("conversation_id")
+      .notNull()
+      .references(() => conversations.id, { onDelete: "cascade" }), // ✅ FK
     organization_id: text("organization_id").notNull(),
     role: text("role").notNull(),
     content: text("content").notNull(),
@@ -88,7 +90,6 @@ export const messages = pgTable(
   },
   (t) => [index("msg_conv_idx").on(t.conversation_id)],
 );
-
 /**
  * Per-workspace basic chat widget customization (legacy).
  */

@@ -57,6 +57,13 @@
       "when": 1774476471246,
       "tag": "0007_cheerful_spot",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1774652530071,
+      "tag": "0008_steep_mephisto",
+      "breakpoints": true
     }
   ]
 }
