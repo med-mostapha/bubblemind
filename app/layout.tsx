@@ -31,9 +31,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} min-h-screen flex flex-col p-0 antialiased font-sans`}
       >
-        <MainSiteWrapper>
-          {children}
-        </MainSiteWrapper>
+        <MainSiteWrapper>{children}</MainSiteWrapper>
 
         <Script
           id="unicorn-studio"
