@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 // --- Sub-Component: Terminal Window ---
 const CodeWindow = ({ code }: { code: string }) => {
@@ -20,7 +20,7 @@ const CodeWindow = ({ code }: { code: string }) => {
 
       <div className="relative rounded-xl border border-white/10 bg-[#0C0C0C] shadow-2xl overflow-hidden backdrop-blur-sm">
         {/* Terminal Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 bg-white/[0.02]">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 bg-white/2">
           <div className="flex gap-2">
             <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
             <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
@@ -45,15 +45,15 @@ const CodeWindow = ({ code }: { code: string }) => {
               {"\n  "}
               <span className="text-blue-400">src</span>=
               <span className="text-amber-200">
-                "https://cdn.mrt-ai.io/widget.js"
+                &quot;https://cdn.mrt-ai.io/widget.js&quot;
               </span>
               {"\n  "}
               <span className="text-blue-400">data-assistant-id</span>=
-              <span className="text-amber-200">"rim-corp-001"</span>
+              <span className="text-amber-200">&quot;rim-corp-001&quot;</span>
               {"\n  "}
               <span className="text-blue-400">data-docs-url</span>=
               <span className="text-amber-200">
-                "https://docs.votre-entreprise.mr"
+                &quot;https://docs.votre-entreprise.mr&quot;
               </span>
               <span className="text-emerald-400">{"\n></script>"}</span>
             </code>
@@ -70,23 +70,23 @@ export default function IntegrationSection() {
     {
       id: "01",
       title: "Scan Your Documentation",
-      text: "The AI scans your knowledge base URL and learns your specific business context automatically."
+      text: "The AI scans your knowledge base URL and learns your specific business context automatically.",
     },
     {
       id: "02",
       title: "Copy the Embed Snippet",
-      text: "Paste a single line of code into your global header. No complex SDKs or npm installs required."
+      text: "Paste a single line of code into your global header. No complex SDKs or npm installs required.",
     },
     {
       id: "03",
       title: "Auto-Resolve Tickets",
-      text: "Instantly handle support queries in Hassanya, Arabic, or French without human intervention."
-    }
+      text: "Instantly handle support queries in Hassanya, Arabic, or French without human intervention.",
+    },
   ];
 
   return (
     <section className="bg-[#030303] py-32 px-6 text-white overflow-hidden">
-      <div className="max-w-[1200px] mx-auto">
+      <div className="max-w-300 mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           {/* Left Column: Content */}
           <div className="lg:col-span-6">
@@ -96,7 +96,7 @@ export default function IntegrationSection() {
               viewport={{ once: true }}
               className="mb-12"
             >
-              <h2 className="text-5xl md:text-6xl font-bold tracking-tighter mb-6 bg-gradient-to-b from-white to-gray-500 bg-clip-text text-transparent">
+              <h2 className="text-5xl md:text-6xl font-bold tracking-tighter mb-6 bg-linear-to-b from-white to-gray-500 bg-clip-text text-transparent">
                 Drop In Simplicity
               </h2>
               <p className="text-lg text-gray-400 leading-relaxed max-w-lg">
@@ -115,7 +115,7 @@ export default function IntegrationSection() {
                   viewport={{ once: true }}
                   className="group flex gap-6"
                 >
-                  <div className="flex-shrink-0 text-sm font-mono text-emerald-500/50 mt-1">
+                  <div className="shrink-0 text-sm font-mono text-emerald-500/50 mt-1">
                     {step.id}
                   </div>
                   <div>
