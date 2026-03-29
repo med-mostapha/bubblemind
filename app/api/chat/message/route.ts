@@ -6,6 +6,7 @@ import {
   knowledgeItems,
   messages,
   metadata,
+  user as userTable,
 } from "@/db/schema";
 import { generateSupportAnswer } from "@/lib/openAI";
 import { and, desc, eq } from "drizzle-orm";
@@ -96,12 +97,20 @@ export async function POST(req: NextRequest) {
 
     let brandName: string | undefined;
     if (userEmail) {
-      const [orgMetadata] = await db
-        .select()
-        .from(metadata)
-        .where(eq(metadata.user_email, userEmail))
+      const [dbUser] = await db
+        .select({ id: user.id })
+        .from(user)
+        .where(eq(user.email, userEmail))
         .limit(1);
-      brandName = orgMetadata?.business_name;
+
+      if (dbUser) {
+        const [orgMetadata] = await db
+          .select()
+          .from(metadata)
+          .where(eq(metadata.user_id, dbUser.id))
+          .limit(1);
+        brandName = orgMetadata?.business_name;
+      }
     }
 
     const knowledge = await db

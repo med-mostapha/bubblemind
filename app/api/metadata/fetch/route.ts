@@ -2,19 +2,29 @@ import { db } from "@/db/client";
 import { isAuthorized } from "@/lib/isAuthorized";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
-import { metadata } from "@/db/schema";
+import { metadata, user as User } from "@/db/schema";
 
 export async function GET() {
   try {
-    const user = await isAuthorized();
-    if (!user) {
+    const session = await isAuthorized();
+    if (!session) {
       return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const [dbUser] = await db
+      .select({ id: User.id })
+      .from(User)
+      .where(eq(User.email, session.email))
+      .limit(1);
+
+    if (!dbUser) {
+      return NextResponse.json({ exists: false, data: null });
     }
 
     const [record] = await db
       .select()
       .from(metadata)
-      .where(eq(metadata.user_email, user.email))
+      .where(eq(metadata.user_id, dbUser.id))
       .limit(1);
 
     if (!record) {

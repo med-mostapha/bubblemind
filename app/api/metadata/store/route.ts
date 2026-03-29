@@ -1,12 +1,12 @@
 import { db } from "@/db/client";
-import { metadata } from "@/db/schema";
+import { metadata, user as User } from "@/db/schema";
 import { isAuthorized } from "@/lib/isAuthorized";
 import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const user = await isAuthorized();
-  if (!user) {
+  const session = await isAuthorized();
+  if (!session) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
@@ -16,10 +16,20 @@ export async function POST(req: NextRequest) {
     return new NextResponse("Missing required fields", { status: 400 });
   }
 
+  const [dbUser] = await db
+    .select({ id: User.id })
+    .from(User)
+    .where(eq(User.email, session.email))
+    .limit(1);
+
+  if (!dbUser) {
+    return new NextResponse("User not found", { status: 404 });
+  }
+
   const existing = await db
     .select({ id: metadata.id })
     .from(metadata)
-    .where(eq(metadata.user_email, user.email))
+    .where(eq(metadata.user_id, dbUser.id))
     .limit(1);
 
   if (existing.length > 0) {
@@ -32,7 +42,7 @@ export async function POST(req: NextRequest) {
   const [record] = await db
     .insert(metadata)
     .values({
-      user_email: user.email,
+      user_id: dbUser.id,
       business_name,
       website_url,
       external_links: external_links || null,

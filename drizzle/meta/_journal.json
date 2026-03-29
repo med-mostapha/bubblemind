@@ -64,6 +64,13 @@
       "when": 1774652530071,
       "tag": "0008_steep_mephisto",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1774795703490,
+      "tag": "0009_abandoned_gabe_jones",
+      "breakpoints": true
     }
   ]
 }

@@ -30,10 +30,11 @@ export const metadata = pgTable("metadata", {
   business_name: text("business_name").notNull(),
   website_url: text("website_url").notNull(),
   external_links: text("external_links"),
-  user_email: text("user_email").notNull(),
+  user_id: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
-
 /**
  * Canonical knowledge items per workspace.
  * Stores raw content + summarized content for LLM context retrieval.
