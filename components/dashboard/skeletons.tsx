@@ -136,3 +136,29 @@ export function SidebarSkeleton() {
     </aside>
   );
 }
+
+export function ConversationListSkeleton() {
+  return (
+    <div className="space-y-1 p-2">
+      {[1, 2, 3, 4, 5].map((i) => (
+        <div key={i} className="h-14 rounded-lg bg-white/5 animate-pulse" />
+      ))}
+    </div>
+  );
+}
+
+export function MessageListSkeleton() {
+  return (
+    <div className="flex flex-col gap-3 p-4">
+      <div className="flex justify-start">
+        <div className="h-16 w-3/4 max-w-md rounded-xl bg-white/5 animate-pulse" />
+      </div>
+      <div className="flex justify-end">
+        <div className="h-12 w-1/2 max-w-sm rounded-xl bg-white/5 animate-pulse" />
+      </div>
+      <div className="flex justify-start">
+        <div className="h-20 w-4/5 max-w-md rounded-xl bg-white/5 animate-pulse" />
+      </div>
+    </div>
+  );
+}

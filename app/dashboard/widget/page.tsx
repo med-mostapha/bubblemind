@@ -4,6 +4,7 @@ import Initialform from "@/components/dashboard/initialform";
 import ChatWidgetSettingsPanel from "@/components/dashboard/widget/ChatWidgetSettingsPanel";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { WidgetSkeleton } from "@/components/dashboard/skeletons";
 
 interface WorkspaceMetadata {
   business_name?: string;
@@ -83,11 +84,7 @@ export default function WidgetDashboardPage() {
   }, [widgetSettings]);
 
   if (isMetaDataAvailable === null) {
-    return (
-      <div className="flex-1 flex w-full items-center justify-center text-white">
-        Loading...
-      </div>
-    );
+    return <WidgetSkeleton />;
   }
 
   if (!isMetaDataAvailable) {
@@ -102,7 +99,7 @@ export default function WidgetDashboardPage() {
   const botId = widgetSettings?.bot_id || "YOUR_BOT_ID";
 
   return (
-    <div className="p-6 md:p-8 space-y-8 max-w-7xl mx-auto animate-in fade-in duration-500 md:ml-64">
+    <div className="p-6 md:p-8 space-y-8 max-w-7xl mx-auto md:ml-64">
       {error && (
         <div className="text-xs text-red-400 bg-red-950/40 border border-red-500/20 rounded-lg px-3 py-2">
           {error}

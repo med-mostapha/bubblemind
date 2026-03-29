@@ -5,6 +5,7 @@ import QuickActions from "@/components/dashboard/KNOWLEDGE/quickActions";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import { KnowledgeSkeleton } from "@/components/dashboard/skeletons";
 
 function Knowledge() {
   const [defaultTab, setDefaultTab] = useState("website");
@@ -78,8 +79,12 @@ function Knowledge() {
     }
   };
 
+  if (knowledgeSourcesLoader && knowledgeSources.length === 0) {
+    return <KnowledgeSkeleton />;
+  }
+
   return (
-    <div className="p-6 md:p-8 space-y-8 max-w-7xl mx-auto animate-in fade-in duration-500 md:ml-64">
+    <div className="p-6 md:p-8 space-y-8 max-w-7xl mx-auto md:ml-64">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-2xl font-semibold text-white tracking-tight">
@@ -112,11 +117,7 @@ function Knowledge() {
           </span>
         </div>
 
-        {knowledgeSourcesLoader ? (
-          <div className="rounded-xl border border-white/5 bg-zinc-950/60 p-4 text-xs text-zinc-500">
-            Loading knowledge sources...
-          </div>
-        ) : knowledgeSources.length === 0 ? (
+        {knowledgeSources.length === 0 ? (
           <div className="rounded-xl border border-dashed border-white/10 bg-zinc-950/40 p-5 text-xs text-zinc-400">
             No knowledge sources have been added yet. Ingest a URL, CSV, or raw
             text to bootstrap your AI support assistant.

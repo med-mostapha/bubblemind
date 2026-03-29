@@ -4,6 +4,11 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { MessageSquare, ChevronRight } from "lucide-react";
 
+import {
+  ConversationListSkeleton,
+  MessageListSkeleton,
+} from "@/components/dashboard/skeletons";
+
 type ConversationItem = {
   id: string;
   title: string;
@@ -41,32 +46,6 @@ function formatDate(iso: string) {
   } catch {
     return "";
   }
-}
-
-function ConversationListSkeleton() {
-  return (
-    <div className="space-y-1 p-2">
-      {[1, 2, 3, 4, 5].map((i) => (
-        <div key={i} className="h-14 rounded-lg bg-white/5 animate-pulse" />
-      ))}
-    </div>
-  );
-}
-
-function MessageListSkeleton() {
-  return (
-    <div className="flex flex-col gap-3 p-4">
-      <div className="flex justify-start">
-        <div className="h-16 w-3/4 max-w-md rounded-xl bg-white/5 animate-pulse" />
-      </div>
-      <div className="flex justify-end">
-        <div className="h-12 w-1/2 max-w-sm rounded-xl bg-white/5 animate-pulse" />
-      </div>
-      <div className="flex justify-start">
-        <div className="h-20 w-4/5 max-w-md rounded-xl bg-white/5 animate-pulse" />
-      </div>
-    </div>
-  );
 }
 
 export default function ConversationsPage() {
@@ -126,7 +105,7 @@ export default function ConversationsPage() {
   const selectedConversation = conversations.find((c) => c.id === selectedId);
 
   return (
-    <div className="p-4 md:p-6 md:ml-64 max-w-7xl mx-auto animate-in fade-in duration-300">
+    <div className="p-4 md:p-6 md:ml-64 max-w-7xl mx-auto">
       <div className="mb-6">
         <h1 className="text-2xl font-semibold text-white tracking-tight">
           Conversations
@@ -137,7 +116,7 @@ export default function ConversationsPage() {
         </p>
       </div>
 
-      <div className="rounded-2xl border border-white/5 bg-zinc-950/40 overflow-hidden flex flex-col md:flex-row min-h-[480px]">
+      <div className="rounded-2xl border border-white/5 bg-zinc-950/40 overflow-hidden flex flex-col md:flex-row min-h-120">
         {/* List */}
         <div className="w-full md:w-80 shrink-0 border-b md:border-b-0 md:border-r border-white/5 flex flex-col">
           <div className="p-2 border-b border-white/5">
@@ -235,7 +214,7 @@ export default function ConversationsPage() {
                             : "bg-white/5 text-zinc-200 border border-white/5"
                         }`}
                       >
-                        <p className="whitespace-pre-wrap break-words">
+                        <p className="whitespace-pre-wrap wrap-break-word">
                           {m.content}
                         </p>
                         <p className="text-[10px] text-zinc-500 mt-1">

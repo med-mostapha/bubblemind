@@ -1,6 +1,7 @@
 "use client";
 
 import Initialform from "@/components/dashboard/initialform";
+import { SettingsSkeleton } from "@/components/dashboard/skeletons";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -53,11 +54,7 @@ export default function SettingsPage() {
   }, [router]);
 
   if (isMetaDataAvailable === null) {
-    return (
-      <div className="flex-1 flex w-full items-center justify-center text-white">
-        Loading...
-      </div>
-    );
+    return <SettingsSkeleton />;
   }
 
   if (!isMetaDataAvailable) {
