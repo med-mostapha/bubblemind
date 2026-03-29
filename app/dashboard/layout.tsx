@@ -1,21 +1,20 @@
 import Sidebar from "@/components/dashboard/sidebar";
-import { cookies } from "next/headers";
+import { isAuthorized } from "@/lib/isAuthorized";
 import React from "react";
 
 export default async function DashboardLayout({
-  children
+  children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookieStore = await cookies();
-  const metadaCookie = cookieStore.get("metadata");
+  const user = await isAuthorized();
+
   return (
     <div className="bg-[#050509] min-h-screen font-sans antialiased text-zinc-100 selection:bg-zinc-800 flex">
-      {metadaCookie?.value ? (
+      {user ? (
         <>
           <Sidebar />
           <div className="flex-1 flex w-full">
-            {/* <Header /> */}
             <main className="flex-1">{children}</main>
           </div>
         </>
