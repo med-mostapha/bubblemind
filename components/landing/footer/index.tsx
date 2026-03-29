@@ -8,12 +8,12 @@ const Footer = () => {
     <footer className="relative bg-[#030303] pt-40 pb-10 px-6 overflow-hidden">
       {/* THE BIG BACKGROUND TEXT */}
       <div className="absolute top-0 left-0 w-full overflow-hidden pointer-events-none select-none">
-        <h1 className="text-[15vw] font-black text-white/[0.02] leading-none tracking-tighter whitespace-nowrap">
+        <h1 className="text-[15vw] font-black text-white/2 leading-none tracking-tighter whitespace-nowrap">
           ONE MINUTE SUPPORT • ONE MINUTE SUPPORT
         </h1>
       </div>
 
-      <div className="max-w-[1200px] mx-auto relative z-10">
+      <div className="max-w-300 mx-auto relative z-10">
         {/* SINGLE LINE CTA SECTION */}
         <div className="flex flex-col md:flex-row items-center justify-between pb-20 border-b border-white/10 group">
           <motion.h2
@@ -22,7 +22,7 @@ const Footer = () => {
             className="text-4xl md:text-6xl font-bold tracking-tighter text-white"
           >
             Ready to automate?{" "}
-            <span className="text-emerald-500">Let's talk.</span>
+            <span className="text-emerald-500">Let&apos;s talk.</span>
           </motion.h2>
 
           <motion.button
@@ -78,7 +78,7 @@ const Footer = () => {
         </div>
 
         {/* FINAL BOTTOM LINE */}
-        <div className="flex justify-between items-center text-[10px] text-gray-700 font-medium tracking-widest pt-8 border-t border-white/[0.03]">
+        <div className="flex justify-between items-center text-[10px] text-gray-700 font-medium tracking-widest pt-8 border-t border-white/3">
           <span>© 2024 ALL RIGHTS RESERVED</span>
           <div className="flex gap-4">
             <span className="hover:text-white transition-colors cursor-pointer">
@@ -92,7 +92,7 @@ const Footer = () => {
       </div>
 
       {/* Subtle Bottom Ambient Light */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent" />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-linear-to-r from-transparent via-emerald-500/20 to-transparent" />
     </footer>
   );
 };
