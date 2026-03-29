@@ -94,17 +94,17 @@ export const messages = pgTable(
 /**
  * Per-workspace basic chat widget customization (legacy).
  */
-export const widgetSettings = pgTable("widget_settings", {
-  id: text("id")
-    .primaryKey()
-    .default(sql`gen_random_uuid()`),
-  organization_id: text("organization_id").notNull(),
-  bot_name: text("bot_name"),
-  primary_color: text("primary_color"),
-  greeting_message: text("greeting_message"),
-  position: text("position"),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-});
+// export const widgetSettings = pgTable("widget_settings", {
+//   id: text("id")
+//     .primaryKey()
+//     .default(sql`gen_random_uuid()`),
+//   organization_id: text("organization_id").notNull(),
+//   bot_name: text("bot_name"),
+//   primary_color: text("primary_color"),
+//   greeting_message: text("greeting_message"),
+//   position: text("position"),
+//   createdAt: timestamp("created_at").notNull().defaultNow(),
+// });
 
 /**
  * Fine-grained chat widget settings for the embeddable bubble + window.
