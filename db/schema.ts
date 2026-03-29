@@ -82,7 +82,7 @@ export const messages = pgTable(
       .default(sql`gen_random_uuid()`),
     conversation_id: text("conversation_id")
       .notNull()
-      .references(() => conversations.id, { onDelete: "cascade" }), // ✅ FK
+      .references(() => conversations.id, { onDelete: "cascade" }),
     organization_id: text("organization_id").notNull(),
     role: text("role").notNull(),
     content: text("content").notNull(),
