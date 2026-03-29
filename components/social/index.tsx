@@ -8,37 +8,37 @@ const PARTNERS = [
   {
     name: "SNIM",
     label: "National Industrial & Mining Co.",
-    logo: "https://upload.wikimedia.org/wikipedia/fr/0/02/Logo_SNIM.png"
+    logo: "https://upload.wikimedia.org/wikipedia/fr/0/02/Logo_SNIM.png",
   },
   {
     name: "SOMELEC",
     label: "National Electricity Company",
-    logo: "https://www.somelec.mr/sites/default/files/logo_0.png"
+    logo: "https://www.somelec.mr/sites/default/files/logo_0.png",
   },
   {
     name: "BCM",
     label: "Central Bank of Mauritania",
-    logo: "https://www.bcm.mr/logo.png"
+    logo: "https://www.bcm.mr/logo.png",
   },
   {
     name: "APIM",
     label: "Investment Promotion Agency",
-    logo: "https://apim.gov.mr/wp-content/uploads/2021/05/logo-apim.png"
+    logo: "https://apim.gov.mr/wp-content/uploads/2021/05/logo-apim.png",
   },
   {
     name: "Mauritel",
     label: "Mauritel SA",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Mauritel_logo.svg/1200px-Mauritel_logo.svg.png"
-  }
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Mauritel_logo.svg/1200px-Mauritel_logo.svg.png",
+  },
 ];
 
 export default function SocialProofSection() {
   return (
     <section className="relative w-full py-24 bg-[#030303] border-y border-white/5">
       {/* Background Decorative Element */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[1px] bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent opacity-20" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-px bg-linear-to-r from-transparent via-emerald-500/50 to-transparent opacity-20" />
 
-      <div className="max-w-[1200px] mx-auto px-6">
+      <div className="max-w-300 mx-auto px-6">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
           {/* Left: Authority Statement */}
           <div className="lg:w-1/3 space-y-6">
@@ -47,7 +47,7 @@ export default function SocialProofSection() {
               whileInView={{ opacity: 1, x: 0 }}
               className="flex items-center gap-2 text-emerald-500 font-mono text-xs font-bold tracking-widest uppercase"
             >
-              <span className="w-8 h-[1px] bg-emerald-500" />
+              <span className="w-8 h-px bg-emerald-500" />
               Institutional Trust
             </motion.div>
 
@@ -57,7 +57,7 @@ export default function SocialProofSection() {
               transition={{ delay: 0.1 }}
               className="text-3xl font-bold tracking-tight text-white leading-tight"
             >
-              The AI Backbone for Mauritania's{" "}
+              The AI Backbone for Mauritania&apos;s{" "}
               <span className="text-gray-500">Leading Institutions.</span>
             </motion.h3>
 
@@ -69,7 +69,7 @@ export default function SocialProofSection() {
             >
               From banking compliance to industrial automation, our platform is
               engineered to meet the security and linguistic standards of the
-              country's largest entities.
+              country&apos;s largest entities.
             </motion.p>
           </div>
 

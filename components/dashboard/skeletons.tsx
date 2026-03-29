@@ -115,7 +115,7 @@ export function SettingsSkeleton() {
 
 export function SidebarSkeleton() {
   return (
-    <aside className="w-65 bg-black flex flex-col h-screen fixed left-0 top-0 z-40 hidden md:flex">
+    <aside className="w-65 bg-black  flex-col h-screen fixed left-0 top-0 z-40 hidden md:flex">
       <div className="p-3">
         <div className="h-12 w-full rounded-lg bg-zinc-900 animate-pulse" />
       </div>
