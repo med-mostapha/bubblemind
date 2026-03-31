@@ -26,12 +26,18 @@ const SIDEBAR_ITEMS = [
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
 
+interface SidebarMetadata {
+  business_name?: string;
+  website_url?: string;
+}
+
 function Sidebar() {
   const pathname = usePathname();
 
   const [isLoading, setIsLoading] = useState(true);
   const { user, loading: userLoading } = useUser();
-  const [metadata, setMetadata] = useState<any>();
+
+  const [metadata, setMetadata] = useState<SidebarMetadata | null>(null);
 
   useEffect(() => {
     fetch("/api/metadata/fetch")

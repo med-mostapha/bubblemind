@@ -45,7 +45,7 @@ export default function SettingsPage() {
           const widgetJson = await widgetRes.json();
           setBotId(widgetJson.settings?.bot_id || "Not generated");
         }
-      } catch (err) {
+      } catch (_err) {
         setError("Failed to load settings. Please refresh.");
         setIsMetaDataAvailable(false);
       }

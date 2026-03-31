@@ -1,6 +1,7 @@
 "use client";
 
 import Initialform from "@/components/dashboard/initialform";
+import { DashboardSkeleton } from "@/components/dashboard/skeletons";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -43,30 +44,25 @@ export default function DashboardPage() {
 
       if (!hasMeta) return;
 
-      try {
-        const knowledgeRes = await fetch("/api/knowledge/fetch");
-        if (knowledgeRes.ok) {
-          const knowledgeJson = await knowledgeRes.json();
-          setKnowledgeCount(
-            Array.isArray(knowledgeJson.sources)
-              ? knowledgeJson.sources.length
-              : 0,
-          );
-        }
-      } catch {
-        // Non-critical for overview
+      const [knowledgeRes, convRes] = await Promise.all([
+        fetch("/api/knowledge/fetch").catch(() => null),
+        fetch("/api/conversations/count").catch(() => null),
+      ]);
+
+      if (knowledgeRes?.ok) {
+        const knowledgeJson = await knowledgeRes.json().catch(() => null);
+        setKnowledgeCount(
+          Array.isArray(knowledgeJson?.sources)
+            ? knowledgeJson.sources.length
+            : 0,
+        );
       }
 
-      try {
-        const convRes = await fetch("/api/conversations/count");
-        if (convRes.ok) {
-          const convJson = await convRes.json();
-          setConversationCount(
-            typeof convJson.count === "number" ? convJson.count : 0,
-          );
-        }
-      } catch {
-        // Non-critical for overview
+      if (convRes?.ok) {
+        const convJson = await convRes.json().catch(() => null);
+        setConversationCount(
+          typeof convJson?.count === "number" ? convJson.count : 0,
+        );
       }
     };
 
@@ -74,11 +70,7 @@ export default function DashboardPage() {
   }, [router]);
 
   if (isMetaDataAvailable === null) {
-    return (
-      <div className="flex-1 flex w-full items-center justify-center text-white">
-        Loading...
-      </div>
-    );
+    return <DashboardSkeleton />;
   }
 
   if (!isMetaDataAvailable) {
@@ -92,7 +84,7 @@ export default function DashboardPage() {
   const businessName = workspaceMeta?.business_name || "Your workspace";
 
   return (
-    <div className="p-6 md:p-8 space-y-8 max-w-7xl mx-auto animate-in fade-in duration-500 md:ml-64">
+    <div className="p-6 md:p-8 space-y-8 max-w-7xl mx-auto md:ml-64">
       {/* Top header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
@@ -149,9 +141,11 @@ export default function DashboardPage() {
           </div>
           <div className="mt-3 flex items-end justify-between">
             <div>
-              <div className="text-3xl font-semibold text-white">Gemini</div>
+              <div className="text-3xl font-semibold text-white">
+                OpenRouter
+              </div>
               <p className="text-[11px] text-zinc-500 mt-1">
-                Context-trimmed, knowledge-grounded answers
+                Llama 3 — context-trimmed, knowledge-grounded answers
               </p>
             </div>
           </div>
@@ -193,8 +187,8 @@ export default function DashboardPage() {
               <span className="block text-xs text-zinc-500">
                 Add URLs, CSV files, or raw text in the{" "}
                 <span className="font-medium">Knowledge</span> section. Content
-                is scraped via ZenRows and compressed by Gemini for efficient
-                context.
+                is scraped via ZenRows and compressed by OpenRouter LLM for
+                efficient context.
               </span>
             </li>
             <li>
