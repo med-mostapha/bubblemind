@@ -1,12 +1,12 @@
 import { isAuthorized } from "@/lib/isAuthorized";
 import { db } from "@/db/client";
 import { conversations, messages } from "@/db/schema";
-import { and, desc, eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   _req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const user = await isAuthorized();
@@ -18,7 +18,7 @@ export async function GET(
     if (!conversationId) {
       return NextResponse.json(
         { error: "Conversation ID required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -28,15 +28,15 @@ export async function GET(
       .where(
         and(
           eq(conversations.id, conversationId),
-          eq(conversations.organization_id, user.organization_id)
-        )
+          eq(conversations.organization_id, user.organization_id),
+        ),
       )
       .limit(1);
 
     if (!conv) {
       return NextResponse.json(
         { error: "Conversation not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -63,7 +63,7 @@ export async function GET(
     console.error("Error fetching conversation messages:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

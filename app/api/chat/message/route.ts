@@ -6,7 +6,6 @@ import {
   knowledgeItems,
   messages,
   metadata,
-  user as userTable,
 } from "@/db/schema";
 import { generateSupportAnswer } from "@/lib/openAI";
 import { and, desc, eq } from "drizzle-orm";

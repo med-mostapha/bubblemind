@@ -1,3 +1,8 @@
+interface OpenRouterMessage {
+  role: "system" | "user" | "assistant";
+  content: string;
+}
+
 const OPENROUTER_ENDPOINT = "https://openrouter.ai/api/v1/chat/completions";
 
 const SUMMARY_MODEL =
@@ -5,11 +10,9 @@ const SUMMARY_MODEL =
 
 const ASSISTANT_MODEL = process.env.OPENROUTER_ASSISTANT_MODEL || SUMMARY_MODEL;
 
-async function callOpenRouter(model: string, messages: any[]) {
+async function callOpenRouter(model: string, messages: OpenRouterMessage[]) {
   const apiKey = process.env.OPENROUTER_API_KEY;
-  if (!apiKey) {
-    throw new Error("OPENROUTER_API_KEY is not configured");
-  }
+  if (!apiKey) throw new Error("OPENROUTER_API_KEY is not configured");
 
   const res = await fetch(OPENROUTER_ENDPOINT, {
     method: "POST",
@@ -17,10 +20,7 @@ async function callOpenRouter(model: string, messages: any[]) {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      model,
-      messages,
-    }),
+    body: JSON.stringify({ model, messages }),
   });
 
   if (!res.ok) {
@@ -29,17 +29,21 @@ async function callOpenRouter(model: string, messages: any[]) {
     throw new Error("OpenRouter API request failed");
   }
 
-  const data: any = await res.json();
+  const data = (await res.json()) as {
+    choices?: { message?: { content?: unknown } }[];
+  };
+
   const content = data.choices?.[0]?.message?.content;
 
-  if (typeof content === "string") {
-    return content.trim();
-  }
+  if (typeof content === "string") return content.trim();
 
-  // Some models may return array-like content; normalize defensively.
   if (Array.isArray(content)) {
     return content
-      .map((part) => (typeof part === "string" ? part : part?.text || ""))
+      .map((part) =>
+        typeof part === "string"
+          ? part
+          : (part as { text?: string })?.text || "",
+      )
       .join(" ")
       .trim();
   }
@@ -80,28 +84,7 @@ The result will be stored as long-term context for a chatbot.
   }
 }
 
-export async function summarizeConversation(messages: any[]) {
-  try {
-    const systemPrompt =
-      "Summarize the following conversation history into a concise paragraph, preserving key details and user intent. The final output MUST be under 2000 words.";
-
-    const conversationText = messages
-      .map((m) => `${m.role || "user"}: ${m.content}`)
-      .join("\n");
-
-    const content = await callOpenRouter(SUMMARY_MODEL, [
-      { role: "system", content: systemPrompt },
-      { role: "user", content: conversationText },
-    ]);
-
-    return content;
-  } catch (error) {
-    console.error("Error in summarizeConversation:", error);
-    throw error;
-  }
-}
-
-/** Fix common UTF-8 mojibake (UTF-8 read as Latin-1) in model or context output. */
+/** Fix common UTF-8 mojibake */
 function fixMojibake(text: string): string {
   if (!text || typeof text !== "string") return text;
   const fixes: [RegExp, string][] = [
@@ -152,7 +135,6 @@ STRICT RULES:
 `.trim();
 
     const cleanContext = fixMojibake(knowledgeContext);
-
     const userContent = `KNOWLEDGE CONTEXT:\n${cleanContext}\n\nUSER QUESTION:\n${question}`;
 
     const content = await callOpenRouter(ASSISTANT_MODEL, [

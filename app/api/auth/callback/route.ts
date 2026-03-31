@@ -7,8 +7,8 @@ import { cookies } from "next/headers";
 
 function extractOrganizationId(claims: Record<string, unknown>): string | null {
   if (typeof claims.organization_id === "string") return claims.organization_id;
-  if (claims.org && typeof (claims.org as any).id === "string")
-    return (claims.org as any).id;
+  const org = claims.org as Record<string, unknown> | undefined;
+  if (org && typeof org.id === "string") return org.id;
   if (typeof claims.oid === "string") return claims.oid;
   return null;
 }
