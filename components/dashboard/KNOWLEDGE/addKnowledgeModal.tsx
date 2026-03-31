@@ -1,29 +1,24 @@
 "use client";
 
-import React, { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
-  Globe,
-  FileText,
   Upload,
   Loader2,
   AlertCircle,
   Link2,
-  ChevronRight,
   ShieldCheck,
   Zap,
 } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { cn } from "@/lib/utils";
-import { AnimatePresence } from "framer-motion";
 import { Label } from "@/components/ui/label";
+
+interface KnowledgeSource {
+  id: string;
+  type: string;
+  title: string;
+}
 
 export default function SovereignKnowledgeModal({
   isOpen,
@@ -33,7 +28,15 @@ export default function SovereignKnowledgeModal({
   existingSources = [],
   defaultTab = "website",
   setdefaultTab,
-}: any) {
+}: {
+  isOpen: boolean;
+  setIsOpen: (v: boolean) => void;
+  onImport: (data: Record<string, unknown>) => void;
+  isLoading: boolean;
+  existingSources?: KnowledgeSource[];
+  defaultTab?: string;
+  setdefaultTab?: (v: string) => void;
+}) {
   const [activeTab, setActiveTab] = useState(defaultTab);
   const [error, setError] = useState<string | null>(null);
 
@@ -77,7 +80,7 @@ export default function SovereignKnowledgeModal({
       );
       setIsOpen(false);
       resetForm();
-    } catch (err) {
+    } catch (_err) {
       setError("SYNC_INTERRUPTED: Check network protocols.");
     }
   };

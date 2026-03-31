@@ -7,13 +7,23 @@ import { Plus, Trash2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { KnowledgeSkeleton } from "@/components/dashboard/skeletons";
 
+interface KnowledgeSource {
+  id: string;
+  type: string;
+  title: string;
+  source_url?: string | null;
+  summarized_content?: string;
+}
+
 function Knowledge() {
   const [defaultTab, setDefaultTab] = useState("website");
   const [isAddOpen, setIsAddOpen] = useState(false);
-  const [knowledgeSources, setKnowledgeSources] = useState<any[]>([]);
+  const [knowledgeSources, setKnowledgeSources] = useState<KnowledgeSource[]>(
+    [],
+  );
   const [knowledgeStoringLoader, setKnowledgeStoringLoader] = useState(false);
   const [knowledgeSourcesLoader, setKnowledgeSourcesLoader] = useState(true);
-  const [deletingId, setDeletingId] = useState<string | null>(null); // ✅
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const openModal = (tab: string) => {
     setDefaultTab(tab);
@@ -36,7 +46,7 @@ function Knowledge() {
     refreshKnowledge();
   }, []);
 
-  const handleImportSource = async (data: any) => {
+  const handleImportSource = async (data: Record<string, unknown>) => {
     try {
       setKnowledgeStoringLoader(true);
       let response: Response;
@@ -44,7 +54,7 @@ function Knowledge() {
       if (data.type === "upload" && data.file) {
         const formData = new FormData();
         formData.append("type", "upload");
-        formData.append("file", data.file);
+        formData.append("file", data.file as File);
         response = await fetch("/api/knowledge/upload-csv", {
           method: "POST",
           body: formData,
@@ -124,7 +134,7 @@ function Knowledge() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {knowledgeSources.map((source: any) => (
+            {knowledgeSources.map((source) => (
               <div
                 key={source.id}
                 className="rounded-xl border border-white/5 bg-zinc-950/60 p-4 flex flex-col gap-2"
