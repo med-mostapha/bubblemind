@@ -5,6 +5,7 @@ import ChatWidgetSettingsPanel from "@/components/dashboard/widget/ChatWidgetSet
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { WidgetSkeleton } from "@/components/dashboard/skeletons";
+import type { ChatWidgetSettings } from "@/components/dashboard/widget/ChatWidgetSettingsPanel";
 
 interface WorkspaceMetadata {
   business_name?: string;
@@ -13,21 +14,21 @@ interface WorkspaceMetadata {
 }
 
 export default function WidgetDashboardPage() {
+  const [widgetSettings, setWidgetSettings] =
+    useState<ChatWidgetSettings | null>(null);
   const [isMetaDataAvailable, setIsMetaDataAvailable] = useState<
     null | boolean
   >(null);
   const [workspaceMeta, setWorkspaceMeta] = useState<WorkspaceMetadata | null>(
     null,
   );
-  const [embedOrigin, setEmbedOrigin] = useState<string>("");
-  const [widgetSettings, setWidgetSettings] = useState<any | null>(null);
+  const [embedOrigin] = useState(() =>
+    typeof window !== "undefined" ? window.location.origin : "",
+  );
+
   const [error, setError] = useState<string | null>(null);
   const isFirstLoad = useRef(true);
   const router = useRouter();
-
-  useEffect(() => {
-    if (typeof window !== "undefined") setEmbedOrigin(window.location.origin);
-  }, []);
 
   useEffect(() => {
     const bootstrap = async () => {
@@ -52,7 +53,7 @@ export default function WidgetDashboardPage() {
           const widgetJson = await widgetRes.json();
           setWidgetSettings(widgetJson.settings || null);
         }
-      } catch (err) {
+      } catch (_err) {
         setError("Failed to load widget settings. Please refresh.");
         setIsMetaDataAvailable(false);
       }

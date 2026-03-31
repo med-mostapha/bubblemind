@@ -2,13 +2,14 @@
 
 import React, { useState } from "react";
 
-interface ChatWidgetSettings {
+export interface ChatWidgetSettings {
+  bot_id?: string;
   bubble_position: string;
   bubble_color: string;
   bubble_icon: string;
   bubble_icon_url: string;
   bubble_size: string;
-  bubble_animation: boolean; // ✅
+  bubble_animation: boolean;
   tooltip_text: string;
   window_primary_color: string;
   window_background_color: string;
@@ -17,9 +18,9 @@ interface ChatWidgetSettings {
   window_header_title: string;
   window_header_subtitle: string;
   company_logo_url: string;
-  use_logo_as_bubble: boolean; // ✅
+  use_logo_as_bubble: boolean;
   opening_message: string;
-  opening_message_enabled: boolean; // ✅
+  opening_message_enabled: boolean;
 }
 
 interface Props {

@@ -61,7 +61,7 @@ function EmbedSkeleton() {
               style={{ backgroundColor: SKELETON_PRIMARY + "40" }}
             />
             <div
-              className="h-14 w-[85%] max-w-[220px] rounded-2xl rounded-bl-sm animate-pulse"
+              className="h-14 w-[85%] max-w-55 rounded-2xl rounded-bl-sm animate-pulse"
               style={{ backgroundColor: "rgba(255,255,255,0.06)" }}
             />
           </div>
@@ -71,7 +71,7 @@ function EmbedSkeleton() {
               style={{ backgroundColor: SKELETON_PRIMARY + "40" }}
             />
             <div
-              className="h-10 w-[70%] max-w-[180px] rounded-2xl rounded-bl-sm animate-pulse"
+              className="h-10 w-[70%] max-w-45 rounded-2xl rounded-bl-sm animate-pulse"
               style={{ backgroundColor: "rgba(255,255,255,0.06)" }}
             />
           </div>
@@ -80,7 +80,7 @@ function EmbedSkeleton() {
         <div className="px-3 pb-3 pt-2 border-t border-white/5">
           <div className="flex items-center gap-2 rounded-full bg-slate-900/80 border border-white/10 px-3 py-1.5">
             <div
-              className="flex-1 h-4 rounded animate-pulse max-w-[120px]"
+              className="flex-1 h-4 rounded animate-pulse max-w-30"
               style={{ backgroundColor: "rgba(255,255,255,0.08)" }}
             />
             <div
