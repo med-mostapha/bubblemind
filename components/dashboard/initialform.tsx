@@ -130,7 +130,9 @@ export default function HighVisibilityOnboarding() {
                       type="text"
                       autoComplete="off"
                       placeholder={STEPS[step].placeholder}
-                      value={(formData as any)[STEPS[step].field]}
+                      value={
+                        (formData as Record<string, string>)[STEPS[step].field]
+                      }
                       onChange={(e) =>
                         setFormData({
                           ...formData,
