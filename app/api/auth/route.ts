@@ -10,23 +10,23 @@ export async function GET() {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      path: "/"
+      path: "/",
     });
     const rediretctUrl = process.env.SCALEKIT_REDIRECT_URI;
     const options = {
       scopes: ["openid", "profile", "email", "offline_access"],
-      state
+      state,
     };
     const authorizationUrl = scaleKit.getAuthorizationUrl(
       rediretctUrl!,
-      options
+      options,
     );
     return NextResponse.redirect(authorizationUrl);
   } catch (error) {
     console.error("Error during authentication:", error);
     return NextResponse.json(
       { error: "Authentication failed to generate authorization URL" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

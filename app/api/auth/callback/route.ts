@@ -19,17 +19,17 @@ export async function GET(req: NextRequest) {
   const error = searchParams.get("error");
   const error_description = searchParams.get("error_description");
 
-  const state = searchParams.get("state");
-  const cookieStore = await cookies();
-  const savedState = cookieStore.get("sk_state")?.value;
+  // const state = searchParams.get("state");
+  // const cookieStore = await cookies();
+  // const savedState = cookieStore.get("sk_state")?.value;
 
-  if (!state || !savedState || state !== savedState) {
-    return new Response("Authentication failed: Invalid state parameter", {
-      status: 400,
-    });
-  }
+  // if (!state || !savedState || state !== savedState) {
+  //   return new Response("Authentication failed: Invalid state parameter", {
+  //     status: 400,
+  //   });
+  // }
 
-  cookieStore.delete("sk_state");
+  // cookieStore.delete("sk_state");
 
   if (error) {
     console.error("Authentication error:", error, error_description);
