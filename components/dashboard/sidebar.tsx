@@ -33,10 +33,8 @@ interface SidebarMetadata {
 
 function Sidebar() {
   const pathname = usePathname();
-
   const [isLoading, setIsLoading] = useState(true);
   const { user, loading: userLoading } = useUser();
-
   const [metadata, setMetadata] = useState<SidebarMetadata | null>(null);
 
   useEffect(() => {
@@ -50,32 +48,31 @@ function Sidebar() {
   }, []);
 
   return (
-    <aside className="w-65 bg-[#000000] flex flex-col h-screen fixed left-0 top-0 z-40 md:flex selection:bg-emerald-500/30">
-      {/* 1. NEW CHAT / ACTION BUTTON (OpenAI Signature) */}
+    <aside className="w-64 dark:bg-black bg-white border-r dark:border-white/5 border-zinc-200 flex flex-col h-screen fixed left-0 top-0 z-40 md:flex selection:bg-emerald-500/30 transition-colors duration-200">
+      {/* NEW INSTANCE BUTTON */}
       <div className="p-3">
-        <button className="w-full flex items-center justify-between px-3 py-3 rounded-lg border border-white/10 hover:bg-white/5 transition-all group duration-300">
+        <button className="w-full flex items-center justify-between px-3 py-3 rounded-lg border dark:border-white/10 border-zinc-200 dark:hover:bg-white/5 hover:bg-zinc-50 transition-all group duration-300">
           <div className="flex items-center gap-3">
-            <div className="bg-white text-black rounded-full p-0.5">
+            <div className="bg-black dark:bg-white text-white dark:text-black rounded-full p-0.5">
               <Plus className="w-4 h-4" />
             </div>
-            <span className="text-sm font-medium text-white/90 group-hover:text-white">
+            <span className="text-sm font-medium dark:text-white/90 text-zinc-700 group-hover:text-zinc-900 dark:group-hover:text-white">
               New Instance
             </span>
           </div>
-          <span className="text-[10px] font-mono text-white/20 group-hover:text-white/40">
+          <span className="text-[10px] font-mono dark:text-white/20 text-zinc-400 dark:group-hover:text-white/40 group-hover:text-zinc-600">
             ⌘N
           </span>
         </button>
       </div>
 
-      {/* 2. NAVIGATION (Grok Style - Text Heavy & Clean) */}
+      {/* NAVIGATION */}
       <nav className="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto scrollbar-hide">
         <div className="px-3 py-4">
-          <span className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">
+          <span className="text-[10px] font-bold dark:text-white/20 text-zinc-400 uppercase tracking-[0.3em]">
             Core Engine
           </span>
         </div>
-
         {SIDEBAR_ITEMS.map((item) => {
           const isActive = pathname === item.href;
           return (
@@ -85,16 +82,16 @@ function Sidebar() {
               className={cn(
                 "group flex items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-all duration-200",
                 isActive
-                  ? "bg-zinc-900 text-white"
-                  : "text-zinc-400 hover:bg-zinc-900/50 hover:text-white",
+                  ? "dark:bg-zinc-900 bg-zinc-100 dark:text-white text-zinc-900"
+                  : "dark:text-zinc-400 text-zinc-500 dark:hover:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:text-white hover:text-zinc-900",
               )}
             >
               <item.icon
                 className={cn(
-                  "w-4.5 h-4.5",
+                  "w-4 h-4",
                   isActive
                     ? "text-emerald-500"
-                    : "text-zinc-500 group-hover:text-zinc-300",
+                    : "dark:text-zinc-500 text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300",
                 )}
               />
               <span className="flex-1 truncate tracking-tight font-medium">
@@ -105,18 +102,18 @@ function Sidebar() {
         })}
       </nav>
 
-      {/* 3. FOOTER / USER (Minimalist Overlay) */}
-      <div className="p-3 border-t border-white/3">
-        <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-zinc-900 transition-all cursor-pointer group">
-          <div className="h-8 w-8 rounded-full bg-zinc-800 border border-white/5 flex items-center justify-center shrink-0">
-            <span className="text-[10px] font-bold text-white">
+      {/* FOOTER */}
+      <div className="p-3 border-t dark:border-white/5 border-zinc-200">
+        <div className="flex items-center gap-3 p-3 rounded-lg dark:hover:bg-zinc-900 hover:bg-zinc-50 transition-all cursor-pointer group">
+          <div className="h-8 w-8 rounded-full dark:bg-zinc-800 bg-zinc-100 border dark:border-white/5 border-zinc-200 flex items-center justify-center shrink-0">
+            <span className="text-[10px] font-bold dark:text-white text-zinc-700">
               {isLoading
                 ? ""
                 : metadata?.business_name?.slice(0, 1)?.toUpperCase()}
             </span>
           </div>
           <div className="flex flex-col min-w-0">
-            <span className="text-[13px] font-semibold text-white truncate leading-none">
+            <span className="text-[13px] font-semibold dark:text-white text-zinc-800 truncate leading-none">
               {isLoading ? "..." : metadata?.business_name}
             </span>
             <span className="text-[11px] text-zinc-500 truncate mt-1">
