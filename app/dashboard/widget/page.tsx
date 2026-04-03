@@ -108,24 +108,24 @@ export default function WidgetDashboardPage() {
       )}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-zinc-500">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] dark:text-zinc-500 text-zinc-400">
             Widget
           </p>
-          <h1 className="mt-2 text-2xl md:text-3xl font-semibold text-white tracking-tight">
+          <h1 className="mt-2 text-2xl md:text-3xl font-semibold dark:text-white text-zinc-900 tracking-tight">
             {businessName} • Chat Widget
           </h1>
-          <p className="mt-2 text-sm text-zinc-400 max-w-xl">
+          <p className="mt-2 text-sm dark:text-zinc-400 text-zinc-500 max-w-xl">
             Configure and preview your embeddable AI support widget.
           </p>
         </div>
 
-        <div className="w-full md:w-auto md:min-w-[320px] rounded-2xl border border-white/10 bg-linear-to-br from-zinc-900/80 to-zinc-900/40 px-4 py-3 text-xs text-zinc-300">
+        <div className="w-full md:w-auto md:min-w-[320px] rounded-2xl border dark:border-white/10 border-zinc-200 dark:bg-linear-to-br dark:from-zinc-900/80 dark:to-zinc-900/40 bg-zinc-50 px-4 py-3 text-xs dark:text-zinc-300 text-zinc-600">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-zinc-500">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.22em] dark:text-zinc-500 text-zinc-400">
               Embed Snippet
             </span>
           </div>
-          <div className="font-mono text-[11px] bg-black/40 rounded-lg px-3 py-2 border border-white/5 overflow-x-auto whitespace-nowrap">
+          <div className="font-mono text-[11px] dark:bg-black/40 bg-zinc-100 rounded-lg px-3 py-2 dark:border-white/5 border-zinc-200 border overflow-x-auto whitespace-nowrap">
             {`<script src="${embedOrigin || "https://your-domain.com"}/widget.js" data-bot-id="${botId}"></script>`}
           </div>
         </div>
