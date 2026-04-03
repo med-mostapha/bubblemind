@@ -8,9 +8,11 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }>) {
   const user = await isAuthorized();
-
   return (
-    <div className="bg-[#050509] min-h-screen font-sans antialiased text-zinc-100 selection:bg-zinc-800 flex">
+    <div
+      className="min-h-screen font-sans antialiased text-zinc-800 dark:text-zinc-100 selection:bg-zinc-200 dark:selection:bg-zinc-800 flex transition-colors duration-200"
+      style={{ backgroundColor: "var(--db-bg)" }}
+    >
       {user ? (
         <>
           <Sidebar />
