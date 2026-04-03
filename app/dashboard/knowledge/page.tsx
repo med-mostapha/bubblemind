@@ -97,10 +97,10 @@ function Knowledge() {
     <div className="p-6 md:p-8 space-y-8 max-w-7xl mx-auto md:ml-64">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-white tracking-tight">
+          <h1 className="text-2xl font-semibold dark:text-white text-zinc-900 tracking-tight">
             Knowledge
           </h1>
-          <p className="text-sm text-zinc-400 mt-1">
+          <p className="text-sm dark:text-zinc-400 text-zinc-500 mt-1">
             Manage your knowledge base and content.
           </p>
         </div>
@@ -117,10 +117,10 @@ function Knowledge() {
 
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-500">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] dark:text-zinc-500 text-zinc-400">
             Current Knowledge Base
           </p>
-          <span className="text-[11px] text-zinc-500">
+          <span className="text-[11px] dark:text-zinc-500 text-zinc-400">
             {knowledgeSourcesLoader
               ? "Syncing..."
               : `${knowledgeSources.length} sources`}
@@ -128,7 +128,7 @@ function Knowledge() {
         </div>
 
         {knowledgeSources.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-white/10 bg-zinc-950/40 p-5 text-xs text-zinc-400">
+          <div className="rounded-xl border border-dashed dark:border-white/10 border-zinc-200 dark:bg-zinc-950/40 bg-zinc-50 p-5 text-xs dark:text-zinc-400 text-zinc-500">
             No knowledge sources have been added yet. Ingest a URL, CSV, or raw
             text to bootstrap your AI support assistant.
           </div>
@@ -137,14 +137,14 @@ function Knowledge() {
             {knowledgeSources.map((source) => (
               <div
                 key={source.id}
-                className="rounded-xl border border-white/5 bg-zinc-950/60 p-4 flex flex-col gap-2"
+                className="rounded-xl border dark:border-white/5 border-zinc-200 dark:bg-zinc-950/60 bg-white p-4 flex flex-col gap-2"
               >
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-sm font-medium text-white truncate">
+                  <span className="text-sm font-medium dark:text-white text-zinc-900 truncate">
                     {source.title || source.source_url || "Untitled source"}
                   </span>
                   <div className="flex items-center gap-2 shrink-0">
-                    <span className="text-[10px] uppercase px-2 py-0.5 rounded-full bg-zinc-900 text-zinc-400 border border-white/10">
+                    <span className="text-[10px] uppercase px-2 py-0.5 rounded-full dark:bg-zinc-900 bg-zinc-100 dark:text-zinc-400 text-zinc-500 dark:border-white/10 border-zinc-200 border">
                       {source.type}
                     </span>
                     <button
@@ -158,11 +158,11 @@ function Knowledge() {
                   </div>
                 </div>
                 {source.source_url && (
-                  <p className="text-[11px] text-zinc-500 truncate">
+                  <p className="text-[11px] dark:text-zinc-500 text-zinc-400 truncate">
                     {source.source_url}
                   </p>
                 )}
-                <p className="text-[11px] text-zinc-500 line-clamp-2">
+                <p className="text-[11px] dark:text-zinc-500 text-zinc-400 line-clamp-2">
                   {source.summarized_content}
                 </p>
               </div>
