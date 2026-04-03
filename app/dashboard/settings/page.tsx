@@ -2,6 +2,7 @@
 
 import Initialform from "@/components/dashboard/initialform";
 import { SettingsSkeleton } from "@/components/dashboard/skeletons";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -113,6 +114,16 @@ export default function SettingsPage() {
               {botId}
             </code>
           </div>
+        </div>
+
+        <div className="rounded-2xl border border-white/5 bg-zinc-950/70 dark:bg-zinc-950/70 p-5 flex flex-col gap-3">
+          <h2 className="text-sm font-semibold text-zinc-900 dark:text-white">
+            Appearance
+          </h2>
+          <p className="text-xs text-zinc-500">
+            Choose your preferred display theme.
+          </p>
+          <ThemeToggle />
         </div>
       </div>
     </div>
