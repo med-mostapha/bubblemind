@@ -88,13 +88,13 @@ export default function DashboardPage() {
       {/* Top header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-zinc-500">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] dark:text-zinc-500 text-zinc-400">
             Overview
           </p>
-          <h1 className="mt-2 text-2xl md:text-3xl font-semibold text-white tracking-tight">
+          <h1 className="mt-2 text-2xl md:text-3xl font-semibold dark:text-white text-zinc-900 tracking-tight">
             {businessName} • AI Support Command Center
           </h1>
-          <p className="mt-2 text-sm text-zinc-400 max-w-xl">
+          <p className="mt-2 text-sm dark:text-zinc-400 text-zinc-500 max-w-xl">
             High-level overview of your AI support stack across knowledge,
             conversations, and widget deployment.
           </p>
@@ -103,13 +103,13 @@ export default function DashboardPage() {
 
       {/* KPI cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-        <div className="rounded-2xl border border-white/5 bg-zinc-950/60 p-4 flex flex-col justify-between">
-          <div className="text-[11px] font-semibold text-zinc-500 uppercase tracking-[0.22em]">
+        <div className="rounded-2xl border dark:border-white/5 border-zinc-200 dark:bg-zinc-950/60 bg-white p-4 flex flex-col justify-between">
+          <div className="text-[11px] font-semibold dark:text-zinc-500 text-zinc-400 uppercase tracking-[0.22em]">
             Knowledge Sources
           </div>
           <div className="mt-3 flex items-end justify-between">
             <div>
-              <div className="text-3xl font-semibold text-white">
+              <div className="text-3xl font-semibold dark:text-white text-zinc-900">
                 {knowledgeCount}
               </div>
               <p className="text-[11px] text-zinc-500 mt-1">
@@ -128,15 +128,15 @@ export default function DashboardPage() {
               <div className="text-3xl font-semibold text-white">
                 {conversationCount}
               </div>
-              <p className="text-[11px] text-zinc-500 mt-1">
+              <p className="text-[11px] dark:text-zinc-500 text-zinc-400 mt-1">
                 Chat sessions stored per workspace
               </p>
             </div>
           </div>
         </div>
 
-        <div className="rounded-2xl border border-white/5 bg-zinc-950/60 p-4 flex flex-col justify-between">
-          <div className="text-[11px] font-semibold text-zinc-500 uppercase tracking-[0.22em]">
+        <div className="rounded-2xl border dark:border-white/5 border-zinc-200 dark:bg-zinc-950/70 bg-white p-5 flex flex-col gap-4">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.22em] dark:text-zinc-500 text-zinc-400">
             Response Engine
           </div>
           <div className="mt-3 flex items-end justify-between">
@@ -174,17 +174,17 @@ export default function DashboardPage() {
               <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-zinc-500">
                 Activity
               </p>
-              <h2 className="mt-1 text-base font-semibold text-white">
+              <h2 className="mt-1 text-base font-semibold dark:text-white text-zinc-900">
                 Get started in three steps
               </h2>
             </div>
           </div>
-          <ol className="mt-2 space-y-3 text-sm text-zinc-300">
+          <ol className="mt-2 space-y-3 text-sm dark:text-zinc-300 text-zinc-600">
             <li>
-              <span className="font-semibold text-zinc-100">
+              <span className="font-semibold dark:text-zinc-100 text-zinc-800">
                 1. Ingest knowledge
               </span>
-              <span className="block text-xs text-zinc-500">
+              <span className="block text-xs dark:text-zinc-500 text-zinc-400">
                 Add URLs, CSV files, or raw text in the{" "}
                 <span className="font-medium">Knowledge</span> section. Content
                 is scraped via ZenRows and compressed by OpenRouter LLM for
