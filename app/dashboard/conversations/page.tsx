@@ -107,20 +107,20 @@ export default function ConversationsPage() {
   return (
     <div className="p-4 md:p-6 md:ml-64 max-w-7xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-white tracking-tight">
+        <h1 className="text-2xl font-semibold dark:text-white text-zinc-900 tracking-tight">
           Conversations
         </h1>
-        <p className="text-sm text-zinc-400 mt-1">
+        <p className="text-sm dark:text-zinc-400 text-zinc-500 mt-1">
           Chat sessions from your widget and dashboard. Click one to view
           messages.
         </p>
       </div>
 
-      <div className="rounded-2xl border border-white/5 bg-zinc-950/40 overflow-hidden flex flex-col md:flex-row min-h-120">
+      <div className="rounded-2xl border dark:border-white/5 border-zinc-200 dark:bg-zinc-950/40 bg-white overflow-hidden flex flex-col md:flex-row min-h-120">
         {/* List */}
-        <div className="w-full md:w-80 shrink-0 border-b md:border-b-0 md:border-r border-white/5 flex flex-col">
-          <div className="p-2 border-b border-white/5">
-            <span className="text-[11px] font-medium text-zinc-500 uppercase tracking-wider">
+        <div className="w-full md:w-80 shrink-0 border-b md:border-b-0 md:border-r dark:border-white/5 border-zinc-200 flex flex-col">
+          <div className="p-2 border-b dark:border-white/5 border-zinc-200">
+            <span className="text-[11px] font-medium dark:text-zinc-500 text-zinc-400 uppercase tracking-wider">
               Recent
             </span>
           </div>
@@ -142,13 +142,13 @@ export default function ConversationsPage() {
                     key={c.id}
                     type="button"
                     onClick={() => setSelectedId(c.id)}
-                    className={`w-full text-left rounded-lg px-3 py-2.5 transition-all duration-150 flex items-center gap-2 ${
+                    className={`... ${
                       selectedId === c.id
-                        ? "bg-emerald-500/15 text-white border border-emerald-500/30"
-                        : "hover:bg-white/5 text-zinc-300 border border-transparent"
+                        ? "bg-emerald-500/15 dark:text-white text-zinc-900 border border-emerald-500/30"
+                        : "dark:hover:bg-white/5 hover:bg-zinc-50 dark:text-zinc-300 text-zinc-600 border border-transparent"
                     }`}
                   >
-                    <span className="flex-1 min-w-0 truncate text-sm font-medium">
+                    <span className="text-[10px] dark:text-zinc-500 text-zinc-400 shrink-0">
                       {c.title}
                     </span>
                     <span className="text-[10px] text-zinc-500 shrink-0">
@@ -169,14 +169,14 @@ export default function ConversationsPage() {
         </div>
 
         {/* Detail */}
-        <div className="flex-1 flex flex-col min-w-0 bg-zinc-950/20">
+        <div className="flex-1 flex flex-col min-w-0 dark:bg-zinc-950/20 bg-zinc-50">
           {!selectedId ? (
-            <div className="flex-1 flex items-center justify-center text-zinc-500 text-sm p-8">
+            <div className="flex-1 flex items-center justify-center dark:text-zinc-500 text-zinc-400 text-sm p-8">
               Select a conversation
             </div>
           ) : messagesLoading ? (
             <div className="flex-1 overflow-y-auto">
-              <div className="p-3 border-b border-white/5 flex items-center gap-2">
+              <div className="p-3 border-b dark:border-white/5 border-zinc-200 shrink-0 flex items-center justify-between">
                 <div className="h-4 w-32 rounded bg-white/5 animate-pulse" />
                 <div className="h-3 w-20 rounded bg-white/5 animate-pulse" />
               </div>
@@ -185,10 +185,10 @@ export default function ConversationsPage() {
           ) : (
             <>
               <div className="p-3 border-b border-white/5 shrink-0 flex items-center justify-between">
-                <h2 className="text-sm font-semibold text-white truncate">
+                <h2 className="text-sm font-semibold dark:text-white text-zinc-900 truncate">
                   {selectedConversation?.title ?? "Conversation"}
                 </h2>
-                <span className="text-[11px] text-zinc-500 shrink-0 ml-2">
+                <span className="text-[11px] dark:text-zinc-500 text-zinc-400 shrink-0 ml-2">
                   {selectedConversation?.createdAt
                     ? formatDate(selectedConversation.createdAt)
                     : ""}
@@ -208,16 +208,16 @@ export default function ConversationsPage() {
                       }`}
                     >
                       <div
-                        className={`max-w-[85%] rounded-xl px-3 py-2 text-sm ${
+                        className={`... ${
                           m.role === "user"
                             ? "bg-emerald-500/20 text-emerald-100 border border-emerald-500/20"
-                            : "bg-white/5 text-zinc-200 border border-white/5"
+                            : "dark:bg-white/5 bg-zinc-100 dark:text-zinc-200 text-zinc-700 dark:border-white/5 border-zinc-200"
                         }`}
                       >
                         <p className="whitespace-pre-wrap wrap-break-word">
                           {m.content}
                         </p>
-                        <p className="text-[10px] text-zinc-500 mt-1">
+                        <p className="text-[10px] dark:text-zinc-500 text-zinc-400 mt-1">
                           {formatDate(m.createdAt)}
                         </p>
                       </div>
