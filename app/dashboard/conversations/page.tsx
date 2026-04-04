@@ -210,7 +210,7 @@ export default function ConversationsPage() {
                       <div
                         className={`max-w-[85%] rounded-xl px-3 py-2 text-sm ${
                           m.role === "user"
-                            ? "bg-emerald-500/20 text-emerald-100 border border-emerald-500/20"
+                            ? "bg-emerald-500/20 text-zinc-700 dark:text-zinc-200 border border-emerald-500/20"
                             : "dark:bg-white/5 bg-zinc-100 dark:text-zinc-200 text-zinc-700 dark:border-white/5 border-zinc-200"
                         }`}
                       >
