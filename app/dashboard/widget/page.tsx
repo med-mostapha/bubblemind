@@ -6,11 +6,58 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { WidgetSkeleton } from "@/components/dashboard/skeletons";
 import type { ChatWidgetSettings } from "@/components/dashboard/widget/ChatWidgetSettingsPanel";
+import { Copy, Check } from "lucide-react";
 
 interface WorkspaceMetadata {
   business_name?: string;
   website_url?: string;
   external_links?: string | null;
+}
+
+function EmbedSnippet({
+  embedOrigin,
+  botId,
+}: {
+  embedOrigin: string;
+  botId: string;
+}) {
+  const [copied, setCopied] = useState(false);
+  const snippetCode = `<script src="${embedOrigin || "https://your-domain.com"}/widget.js" data-bot-id="${botId}"></script>`;
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(snippetCode);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="w-full md:w-auto md:min-w-[320px] rounded-2xl border dark:border-white/10 border-zinc-200 dark:bg-zinc-900/60 bg-zinc-50 px-4 py-3 text-xs dark:text-zinc-300 text-zinc-600">
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-[11px] font-semibold uppercase tracking-[0.22em] dark:text-zinc-500 text-zinc-400">
+          Embed Snippet
+        </span>
+        <button
+          onClick={handleCopy}
+          className="flex items-center gap-1.5 text-[10px] font-medium px-2 py-1 rounded-md dark:bg-white/5 bg-zinc-200 dark:hover:bg-white/10 hover:bg-zinc-300 dark:text-zinc-400 text-zinc-600 transition-colors"
+        >
+          {copied ? (
+            <>
+              <Check className="w-3 h-3 text-emerald-500" />
+              <span className="text-emerald-500">Copied!</span>
+            </>
+          ) : (
+            <>
+              <Copy className="w-3 h-3" />
+              Copy
+            </>
+          )}
+        </button>
+      </div>
+      <div className="font-mono text-[11px] dark:bg-black/40 bg-zinc-100 rounded-lg px-3 py-2 dark:border-white/5 border-zinc-200 border overflow-x-auto whitespace-nowrap dark:text-zinc-300 text-zinc-700">
+        {snippetCode}
+      </div>
+    </div>
+  );
 }
 
 export default function WidgetDashboardPage() {
@@ -119,15 +166,8 @@ export default function WidgetDashboardPage() {
           </p>
         </div>
 
-        <div className="w-full md:w-auto md:min-w-[320px] rounded-2xl border dark:border-white/10 border-zinc-200 dark:bg-linear-to-br dark:from-zinc-900/80 dark:to-zinc-900/40 bg-zinc-50 px-4 py-3 text-xs dark:text-zinc-300 text-zinc-600">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.22em] dark:text-zinc-500 text-zinc-400">
-              Embed Snippet
-            </span>
-          </div>
-          <div className="font-mono text-[11px] dark:bg-black/40 bg-zinc-100 rounded-lg px-3 py-2 dark:border-white/5 border-zinc-200 border overflow-x-auto whitespace-nowrap">
-            {`<script src="${embedOrigin || "https://your-domain.com"}/widget.js" data-bot-id="${botId}"></script>`}
-          </div>
+        <div className="w-full md:w-auto md:min-w-[320px] rounded-2xl border dark:border-white/10 border-zinc-200 dark:bg-linear-to-br dark:from-zinc-900/80 dark:to-zinc-900/40 dark:bg-zinc-900 px-4 py-3 text-xs dark:text-zinc-300 text-zinc-600">
+          <EmbedSnippet embedOrigin={embedOrigin} botId={botId} />
         </div>
       </div>
 
