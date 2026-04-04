@@ -142,13 +142,13 @@ export default function ConversationsPage() {
                     key={c.id}
                     type="button"
                     onClick={() => setSelectedId(c.id)}
-                    className={`... ${
+                    className={`w-full text-left rounded-lg px-3 py-2.5 transition-all duration-150 flex items-center gap-2 ${
                       selectedId === c.id
                         ? "bg-emerald-500/15 dark:text-white text-zinc-900 border border-emerald-500/30"
                         : "dark:hover:bg-white/5 hover:bg-zinc-50 dark:text-zinc-300 text-zinc-600 border border-transparent"
                     }`}
                   >
-                    <span className="text-[10px] dark:text-zinc-500 text-zinc-400 shrink-0">
+                    <span className="flex-1 min-w-0 truncate text-sm font-medium">
                       {c.title}
                     </span>
                     <span className="text-[10px] text-zinc-500 shrink-0">
@@ -208,7 +208,7 @@ export default function ConversationsPage() {
                       }`}
                     >
                       <div
-                        className={`... ${
+                        className={`max-w-[85%] rounded-xl px-3 py-2 text-sm ${
                           m.role === "user"
                             ? "bg-emerald-500/20 text-emerald-100 border border-emerald-500/20"
                             : "dark:bg-white/5 bg-zinc-100 dark:text-zinc-200 text-zinc-700 dark:border-white/5 border-zinc-200"
