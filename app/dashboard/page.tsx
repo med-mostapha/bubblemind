@@ -119,13 +119,13 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-white/5 bg-zinc-950/60 p-4 flex flex-col justify-between">
-          <div className="text-[11px] font-semibold text-zinc-500 uppercase tracking-[0.22em]">
+        <div className="rounded-2xl border dark:border-white/5 border-zinc-200 dark:bg-zinc-950/60 bg-white p-4 flex flex-col justify-between">
+          <div className="text-[11px] font-semibold dark:text-zinc-500 text-zinc-400 uppercase tracking-[0.22em]">
             Conversations
           </div>
           <div className="mt-3 flex items-end justify-between">
             <div>
-              <div className="text-3xl font-semibold text-white">
+              <div className="text-3xl font-semibold dark:text-white text-zinc-900">
                 {conversationCount}
               </div>
               <p className="text-[11px] dark:text-zinc-500 text-zinc-400 mt-1">
@@ -135,30 +135,32 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border dark:border-white/5 border-zinc-200 dark:bg-zinc-950/70 bg-white p-5 flex flex-col gap-4">
+        <div className="rounded-2xl border dark:border-white/5 border-zinc-200 dark:bg-zinc-950/60 bg-white p-4 flex flex-col justify-between">
           <div className="text-[11px] font-semibold uppercase tracking-[0.22em] dark:text-zinc-500 text-zinc-400">
             Response Engine
           </div>
           <div className="mt-3 flex items-end justify-between">
             <div>
-              <div className="text-3xl font-semibold text-white">
+              <div className="text-3xl font-semibold dark:text-white text-zinc-900">
                 OpenRouter
               </div>
-              <p className="text-[11px] text-zinc-500 mt-1">
+              <p className="text-[11px] dark:text-zinc-500 text-zinc-400 mt-1">
                 Llama 3 — context-trimmed, knowledge-grounded answers
               </p>
             </div>
           </div>
         </div>
 
-        <div className="rounded-2xl border border-white/5 bg-zinc-950/60 p-4 flex flex-col justify-between">
-          <div className="text-[11px] font-semibold text-zinc-500 uppercase tracking-[0.22em]">
+        <div className="rounded-2xl border dark:border-white/5 border-zinc-200 dark:bg-zinc-950/60 bg-white p-4 flex flex-col justify-between">
+          <div className="text-[11px] font-semibold dark:text-zinc-500 text-zinc-400 uppercase tracking-[0.22em]">
             Widget Status
           </div>
           <div className="mt-3 flex items-end justify-between">
             <div>
-              <div className="text-3xl font-semibold text-white">Configure</div>
-              <p className="text-[11px] text-zinc-500 mt-1">
+              <div className="text-3xl font-semibold dark:text-white text-zinc-900">
+                Configure
+              </div>
+              <p className="text-[11px] dark:text-zinc-500 text-zinc-400 mt-1">
                 Manage colors and behavior in the Widget section.
               </p>
             </div>
@@ -168,10 +170,10 @@ export default function DashboardPage() {
 
       {/* Bottom grid: activity + live preview */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 items-stretch">
-        <div className="rounded-2xl border border-white/5 bg-zinc-950/70 p-5 flex flex-col gap-4">
+        <div className="rounded-2xl border dark:border-white/5 border-zinc-200 dark:bg-zinc-950/70 bg-white p-5 flex flex-col gap-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-zinc-500">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] dark:text-zinc-500 text-zinc-400">
                 Activity
               </p>
               <h2 className="mt-1 text-base font-semibold dark:text-white text-zinc-900">
@@ -192,20 +194,20 @@ export default function DashboardPage() {
               </span>
             </li>
             <li>
-              <span className="font-semibold text-zinc-100">
+              <span className="font-semibold dark:text-zinc-100 text-zinc-800">
                 2. Test the assistant
               </span>
-              <span className="block text-xs text-zinc-500">
+              <span className="block text-xs dark:text-zinc-500 text-zinc-400">
                 Use the live preview in the Widget section to ask real support
                 questions. Responses are grounded strictly in your workspace
                 knowledge.
               </span>
             </li>
             <li>
-              <span className="font-semibold text-zinc-100">
+              <span className="font-semibold dark:text-zinc-100 text-zinc-800">
                 3. Embed on your site
               </span>
-              <span className="block text-xs text-zinc-500">
+              <span className="block text-xs dark:text-zinc-500 text-zinc-400">
                 Drop the script snippet into any website to deploy a secure,
                 iframe-isolated AI widget.
               </span>
