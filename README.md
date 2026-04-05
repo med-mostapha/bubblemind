@@ -92,35 +92,7 @@ Input (URL / CSV / Text)
 
 ---
 
-## 🔄 In Progress
 
-### Phase 2 — Schema (Deferred)
-
-- [ ] **D3** — Add foreign keys (`messages → conversations`, `chatWidgetSettings → users`)
-- [ ] **D5** — Migrate `metadata.user_email` → `metadata.user_id` (breaking change)
-- [ ] **D6** — Merge `widgetSettings` + `chatWidgetSettings` into one table (breaking change)
-
-### Phase 4 — Frontend & UX
-
-- [ ] **F1** — Fix "Gemini" label in dashboard UI (project uses OpenRouter/Llama)
-- [ ] **F2** — Replace sequential fetches with `Promise.all` in dashboard page
-- [ ] **F3** — Fix Sidebar visibility logic (currently depends on cookie only)
-- [ ] **F4** — Remove duplicate metadata fetch in Sidebar
-- [ ] **F5** — Fix `isloading` typo → `isLoading` in Sidebar
-- [ ] **F6** — Add markdown rendering in ChatWidget messages
-- [ ] **F7** — Add caching to `useUser` hook (currently fetches on every mount)
-- [ ] **F8** — Update `package.json` name from `"my-app"` to `"bubblemind"`
-- [ ] **F9** — Configure `next.config.ts` (image domains, headers, redirects)
-
-### Phase 5 — Vercel Deployment
-
-- [ ] **V1** — Create `.env.example` with all required environment variables
-- [ ] **V2** — Move `drizzle-kit` from `dependencies` to `devDependencies`
-- [ ] **V3** — Add `vercel.json` for function timeout configuration
-- [ ] **V4** — Test `public/widget.js` on production domain
-- [ ] **V5** — Remove unused `summarizeConversation` function from `openAI.ts`
-
----
 
 ## 🔑 Environment Variables
 
