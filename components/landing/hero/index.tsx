@@ -25,7 +25,7 @@ function Hero() {
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-2">
           <div className="flex flex-col sm:flex-row items-center gap-4 animate-float w-full sm:w-auto">
-            <Link href="/signup" className="w-full sm:w-auto">
+            <Link href="/api/auth" className="w-full sm:w-auto">
               <button className="w-full px-8 py-3 bg-white text-black font-medium rounded-full hover:bg-zinc-100 transition-colors">
                 Start for Free
               </button>
