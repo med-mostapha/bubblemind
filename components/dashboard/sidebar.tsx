@@ -1,6 +1,8 @@
 "use client";
 
 import { useUser } from "@/hooks/useUser";
+import { useRouter } from "next/navigation";
+import { LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   BookOpen,
@@ -36,6 +38,19 @@ function Sidebar() {
   const [isLoading, setIsLoading] = useState(true);
   const { user, loading: userLoading } = useUser();
   const [metadata, setMetadata] = useState<SidebarMetadata | null>(null);
+
+  const router = useRouter();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      setIsLoggingOut(true);
+      await fetch("/api/auth/logout", { method: "POST" });
+      router.push("/");
+    } catch {
+      setIsLoggingOut(false);
+    }
+  };
 
   useEffect(() => {
     fetch("/api/metadata/fetch")
@@ -103,7 +118,9 @@ function Sidebar() {
       </nav>
 
       {/* FOOTER */}
+      {/* FOOTER */}
       <div className="p-3 border-t dark:border-white/5 border-zinc-200">
+        {/* User info */}
         <div className="flex items-center gap-3 p-3 rounded-lg dark:hover:bg-zinc-900 hover:bg-zinc-50 transition-all cursor-pointer group">
           <div className="h-8 w-8 rounded-full dark:bg-zinc-800 bg-zinc-100 border dark:border-white/5 border-zinc-200 flex items-center justify-center shrink-0">
             <span className="text-[10px] font-bold dark:text-white text-zinc-700">
@@ -121,6 +138,18 @@ function Sidebar() {
             </span>
           </div>
         </div>
+
+        {/* Logout button */}
+        <button
+          onClick={handleLogout}
+          disabled={isLoggingOut}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg dark:hover:bg-red-500/10 hover:bg-red-50 dark:text-zinc-400 text-zinc-500 dark:hover:text-red-400 hover:text-red-500 transition-all duration-200 disabled:opacity-50 mt-1"
+        >
+          <LogOut className="w-4 h-4 shrink-0" />
+          <span className="text-sm font-medium">
+            {isLoggingOut ? "Signing out..." : "Sign out"}
+          </span>
+        </button>
       </div>
     </aside>
   );
