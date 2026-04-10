@@ -94,20 +94,20 @@ export default function SovereignKnowledgeModal({
       }}
     >
       {/* Increased Width to 800px for a "Professional Dashboard" feel */}
-      <DialogContent className="sm:max-w-200 bg-[#050505] border-white/8 text-white p-0 gap-0 overflow-hidden shadow-[0_0_100px_-20px_rgba(16,185,129,0.1)]">
+      <DialogContent className="sm:max-w-200 dark:bg-[#050505] bg-white dark:border-white/8 border-zinc-200 text-zinc-900 dark:text-white p-0 gap-0 overflow-hidden shadow-[0_0_100px_-20px_rgba(16,185,129,0.1)]">
         <DialogTitle className="sr-only">Data Ingestion</DialogTitle>
         <div className="flex h-137.5">
           {/* LEFT SIDEBAR: Context & Status */}
-          <div className="w-1/3 bg-zinc-950/50 border-r border-white/5 p-8 flex flex-col justify-between">
+          <div className="w-1/3 dark:bg-zinc-950/50 bg-zinc-50 border-r dark:border-white/5 border-zinc-200 p-8 flex flex-col justify-between">
             <div className="space-y-6">
               <div className="h-10 w-10 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex items-center justify-center">
                 <ShieldCheck className="w-5 h-5 text-emerald-500" />
               </div>
               <div className="space-y-2">
-                <h2 className="text-xl font-bold tracking-tighter">
+                <h2 className="text-xl font-bold tracking-tighter dark:text-white text-zinc-900">
                   Data Ingestion
                 </h2>
-                <p className="text-xs text-zinc-500 leading-relaxed font-medium">
+                <p className="text-xs dark:text-zinc-500 text-zinc-400 leading-relaxed font-medium">
                   Upload URLs, raw text, or structured files to train your
                   sovereign instance.
                 </p>
@@ -116,20 +116,20 @@ export default function SovereignKnowledgeModal({
               <div className="space-y-4 pt-4">
                 <div className="flex items-center gap-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">
+                  <span className="text-[10px] font-bold dark:text-zinc-400 text-zinc-500 uppercase tracking-widest">
                     System Ready
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-zinc-800" />
-                  <span className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest">
+                  <div className="w-1.5 h-1.5 rounded-full dark:bg-zinc-800 bg-zinc-300" />
+                  <span className="text-[10px] font-bold dark:text-zinc-600 text-zinc-400 uppercase tracking-widest">
                     Indexing Idle
                   </span>
                 </div>
               </div>
             </div>
 
-            <div className="text-[9px] font-mono text-zinc-700 uppercase tracking-tight">
+            <div className="text-[9px] font-mono dark:text-zinc-700 text-zinc-400 uppercase tracking-tight">
               MRT.AI PROTOCOL v4.0.2
             </div>
           </div>
@@ -148,22 +148,22 @@ export default function SovereignKnowledgeModal({
               className="flex-1 flex flex-col"
             >
               <div className="px-8 pt-8">
-                <TabsList className="bg-white/3 border border-white/5 p-1 h-12 w-full justify-between rounded-xl">
+                <TabsList className="dark:bg-white/3 bg-zinc-100 border dark:border-white/5 border-zinc-200 p-1 h-12 w-full justify-between rounded-xl">
                   <TabsTrigger
                     value="website"
-                    className="flex-1 rounded-lg text-[11px] font-bold uppercase tracking-wider data-[state=active]:bg-white/10"
+                    className="flex-1 rounded-lg text-[11px] font-bold uppercase tracking-wider data-[state=active]:dark:bg-white/10 data-[state=active]:bg-white dark:text-zinc-400 text-zinc-500"
                   >
                     URL Crawl
                   </TabsTrigger>
                   <TabsTrigger
                     value="text"
-                    className="flex-1 rounded-lg text-[11px] font-bold uppercase tracking-wider data-[state=active]:bg-white/10"
+                    className="flex-1 rounded-lg text-[11px] font-bold uppercase tracking-wider data-[state=active]:dark:bg-white/10 data-[state=active]:bg-white dark:text-zinc-400 text-zinc-500"
                   >
                     Raw Context
                   </TabsTrigger>
                   <TabsTrigger
                     value="upload"
-                    className="flex-1 rounded-lg text-[11px] font-bold uppercase tracking-wider data-[state=active]:bg-white/10"
+                    className="flex-1 rounded-lg text-[11px] font-bold uppercase tracking-wider data-[state=active]:dark:bg-white/10 data-[state=active]:bg-white dark:text-zinc-400 text-zinc-500"
                   >
                     File Sync
                   </TabsTrigger>
@@ -187,7 +187,7 @@ export default function SovereignKnowledgeModal({
                       <Link2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-700 group-focus-within:text-emerald-500 transition-colors" />
                       <Input
                         placeholder="https://docs.yourdomain.com"
-                        className="bg-white/2 border-white/8 focus:border-emerald-500/50 h-14 pl-12 rounded-xl text-base placeholder:text-zinc-800 transition-all"
+                        className="dark:bg-white/2 bg-zinc-50 dark:border-white/8 border-zinc-200 focus:border-emerald-500/50 h-14 pl-12 rounded-xl text-base dark:placeholder:text-zinc-800 placeholder:text-zinc-400 transition-all dark:text-white text-zinc-900"
                         value={websiteUrl}
                         onChange={(e) => setWebsiteUrl(e.target.value)}
                       />
@@ -201,23 +201,23 @@ export default function SovereignKnowledgeModal({
                 >
                   <Input
                     placeholder="Title Identifier"
-                    className="bg-white/2 border-white/8 h-12 rounded-xl"
+                    className="dark:bg-white/2 bg-zinc-50 dark:border-white/8 border-zinc-200 h-12 rounded-xl dark:text-white text-zinc-900"
                     value={docsTitle}
                     onChange={(e) => setDocsTitle(e.target.value)}
                   />
                   <textarea
                     placeholder="Input knowledge payload..."
-                    className="flex-1 bg-white/2 border border-white/8 rounded-xl p-4 text-sm text-white focus:border-emerald-500/50 outline-none transition-all resize-none placeholder:text-zinc-800"
+                    className="flex-1 dark:bg-white/2 bg-zinc-50 border dark:border-white/8 border-zinc-200 rounded-xl p-4 text-sm dark:text-white text-zinc-900 focus:border-emerald-500/50 outline-none transition-all resize-none dark:placeholder:text-zinc-800 placeholder:text-zinc-400"
                     value={docsContent}
                     onChange={(e) => setDocsContent(e.target.value)}
                   />
                 </TabsContent>
 
                 <TabsContent value="upload" className="mt-0 h-full">
-                  <label className="flex flex-col items-center justify-center w-full h-full rounded-2xl border-2 border-dashed border-white/5 bg-white/1 hover:bg-white/3 transition-all cursor-pointer group">
+                  <label className="flex flex-col items-center justify-center w-full h-full rounded-2xl border-2 border-dashed dark:border-white/5 border-zinc-200 dark:bg-white/1 bg-zinc-50 dark:hover:bg-white/3 hover:bg-zinc-100 transition-all cursor-pointer group">
                     <div className="text-center p-6">
                       <Upload className="w-8 h-8 text-zinc-700 group-hover:text-emerald-500 transition-colors mx-auto mb-4" />
-                      <p className="text-sm font-bold text-zinc-400 group-hover:text-white transition-colors uppercase tracking-tighter">
+                      <p className="text-sm font-bold dark:text-zinc-400 text-zinc-500 dark:group-hover:text-white group-hover:text-zinc-900 transition-colors uppercase tracking-tighter">
                         {uploadedFile
                           ? uploadedFile.name
                           : "Drop CSV Transmission"}
@@ -239,7 +239,7 @@ export default function SovereignKnowledgeModal({
               <div className="p-8 pt-0 flex items-center justify-between">
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-700 hover:text-white transition-colors"
+                  className="text-[10px] font-black uppercase tracking-[0.3em] dark:text-zinc-700 text-zinc-400 dark:hover:text-white hover:text-zinc-900 transition-colors"
                 >
                   Terminate
                 </button>
